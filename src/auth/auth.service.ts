@@ -23,7 +23,7 @@ export class AuthService {
             const serverWallet = new ethers.Wallet(
                 process.env.SERVER_PRIVATE_KEY,
             );
-            const recoveredServerAddress = ethers.recoverAddress(
+            const recoveredServerAddress = ethers.verifyMessage(
                 authenticationDto.serverSignature.msg,
                 authenticationDto.serverSignature.signature,
             );
@@ -33,7 +33,7 @@ export class AuthService {
                 // console.log('1');
                 throw new BadRequestException();
             }
-            const recoveredUserAddress = ethers.recoverAddress(
+            const recoveredUserAddress = ethers.verifyMessage(
                 authenticationDto.serverSignature.msg,
                 authenticationDto.signature,
             );
