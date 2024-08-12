@@ -18,6 +18,7 @@ import { Builder, BuilderSchema } from './schemas/builder.schema';
 import { Organizer, OrganizerSchema } from './schemas/organizer.schema';
 import { ObjectStorageController } from './non-privacy/object-storage/object-storage.controller';
 import { ObjectStorageService } from './non-privacy/object-storage/object-storage.service';
+import { CourseDraft, CourseDraftSchema } from './schemas/course-draft';
 
 @Module({
     imports: [
@@ -33,6 +34,10 @@ import { ObjectStorageService } from './non-privacy/object-storage/object-storag
             {
                 name: Organizer.name,
                 schema: OrganizerSchema,
+            },
+            {
+                name: CourseDraft.name,
+                schema: CourseDraftSchema,
             },
         ]),
         JwtModule.register({

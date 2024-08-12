@@ -17,6 +17,8 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateOrganizerDto } from 'src/dtos/update-organizer.dto';
 import { Organizer } from 'src/schemas/organizer.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateCampaignDto } from 'src/dtos/create-campaign.dto';
+import { IpfsResponse } from 'src/entities/ipfs-response.entity';
 
 @Controller('organizers')
 export class OrganizersController {
@@ -66,5 +68,19 @@ export class OrganizersController {
     @ApiTags('Organizer')
     async getOrganizer(@Param('address') address: string) {
         return await this.organizersService.getOrganizer(address);
+    }
+
+    @Post()
+    @ApiTags('Campaign')
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
+    async createCampaign(
+        @Body() createCampaignDto: CreateCampaignDto,
+        @Request() req: any,
+    ): Promise<IpfsResponse> {
+        return await this.organizersService.createCampaign(
+            createCampaignDto,
+            req.user,
+        );
     }
 }

@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     FileTypeValidator,
     Get,
     Param,
@@ -17,6 +18,9 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateBuilderDto } from 'src/dtos/update-builder.dto';
 import { Builder } from 'src/schemas/builder.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CourseDraft } from 'src/schemas/course-draft';
+import { UpdateCourseDraftDto } from 'src/dtos/update-course-draft.dto';
+import { CreateCourseDraftDto } from 'src/dtos/create-course-draft.dto';
 
 @Controller('builders')
 export class BuildersController {
@@ -66,5 +70,65 @@ export class BuildersController {
     @ApiTags('Builder')
     async getBuilder(@Param('address') address: string): Promise<Builder> {
         return await this.buildersService.getBuilder(address);
+    }
+
+    @Get('drafts')
+    @ApiTags('Builder')
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
+    async getDrafts(@Request() req: any): Promise<CourseDraft[]> {
+        return await this.buildersService.getDrafts(req.user);
+    }
+
+    @Get('drafts/:draftId')
+    @ApiTags('Builder')
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
+    async getDraft(
+        @Param('draftId') draftId: string,
+        @Request() req: any,
+    ): Promise<CourseDraft> {
+        return await this.buildersService.getDraft(draftId, req.user);
+    }
+
+    @Post('drafts/:draftId')
+    @ApiTags('Builder')
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
+    async updateDraft(
+        @Param('draftId') draftId: string,
+        @Body() updateCourseDraftDto: UpdateCourseDraftDto,
+        @Request() req: any,
+    ): Promise<CourseDraft> {
+        return await this.buildersService.updateDraft(
+            draftId,
+            updateCourseDraftDto,
+            req.user,
+        );
+    }
+
+    @Delete('drafts/:draftId')
+    @ApiTags('Builder')
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
+    async deleteDraft(
+        @Param('draftId') draftId: string,
+        @Request() req: any,
+    ): Promise<void> {
+        await this.buildersService.deleteDraft(draftId, req.user);
+    }
+
+    @Post('drafts')
+    @ApiTags('Builder')
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
+    async createDraft(
+        @Body() createCourseDraftDto: CreateCourseDraftDto,
+        @Request() req: any,
+    ): Promise<CourseDraft> {
+        return await this.buildersService.createDraft(
+            createCourseDraftDto,
+            req.user,
+        );
     }
 }
