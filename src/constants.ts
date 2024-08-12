@@ -23,7 +23,7 @@ export enum ProposalState {
     Executed,
 }
 
-export const authTimeLimit = 120 * 1000;
+export const authTimeLimit = 120 * 10000;
 
 export enum AuthRoleEnum {
     BUILDER,
