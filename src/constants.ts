@@ -22,3 +22,11 @@ export enum ProposalState {
     Expired,
     Executed,
 }
+
+export const authTimeLimit = 120 * 1000;
+
+export enum AuthRoleEnum {
+    BUILDER,
+    ORGANIZER,
+    INVESTOR,
+}
