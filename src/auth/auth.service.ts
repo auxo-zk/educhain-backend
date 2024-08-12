@@ -34,16 +34,20 @@ export class AuthService {
                 authenticationDto.serverSignature.msgHash,
                 authenticationDto.serverSignature.signature,
             );
+            console.log(recoveredServerAddress);
+            console.log(serverWallet.address);
             if (recoveredServerAddress != serverWallet.address) {
-                // console.log('2');
+                console.log('2');
                 throw new BadRequestException();
             }
             const recoveredUserAddress = ethers.recoverAddress(
                 authenticationDto.serverSignature.msgHash,
                 authenticationDto.signature,
             );
+            console.log(recoveredUserAddress);
+            console.log(authenticationDto.address);
             if (recoveredUserAddress != authenticationDto.address) {
-                // console.log('3');
+                console.log('3');
                 throw new BadRequestException();
             }
 
@@ -67,7 +71,9 @@ export class AuthService {
         const msg = JSON.stringify(msgRaw);
         const msgHash = ethers.hashMessage(msg);
         const serverWallet = new ethers.Wallet(process.env.SERVER_PRIVATE_KEY);
-        const signature = await serverWallet.signMessage(msgHash);
+        const signature = await serverWallet.signMessage(
+            Uint8Array.from(Buffer.from(msgHash.slice(2), 'hex')),
+        );
         const serverSignature: ServerSignature = {
             msg: msg,
             msgHash: msgHash,
