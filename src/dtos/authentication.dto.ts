@@ -8,9 +8,6 @@ class ServerSignature {
     msg: string;
 
     @IsString()
-    msgHash: string;
-
-    @IsString()
     signature: string;
 }
 
