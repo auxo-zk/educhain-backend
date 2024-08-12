@@ -20,36 +20,36 @@ export class AuthService {
         const time = Date.parse(msgRaw['time']);
         const now = new Date().getTime();
         if (now - time >= 0 && now - time <= authTimeLimit) {
-            const serverWallet = new ethers.Wallet(
-                process.env.SERVER_PRIVATE_KEY,
-            );
-            const msgHash = ethers.hashMessage(
-                authenticationDto.serverSignature.msg,
-            );
-            if (msgHash != authenticationDto.serverSignature.msgHash) {
-                // console.log('1');
-                throw new BadRequestException();
-            }
-            const recoveredServerAddress = ethers.recoverAddress(
-                authenticationDto.serverSignature.msgHash,
-                authenticationDto.serverSignature.signature,
-            );
-            console.log(recoveredServerAddress);
-            console.log(serverWallet.address);
-            if (recoveredServerAddress != serverWallet.address) {
-                console.log('2');
-                throw new BadRequestException();
-            }
-            const recoveredUserAddress = ethers.recoverAddress(
-                authenticationDto.serverSignature.msgHash,
-                authenticationDto.signature,
-            );
-            console.log(recoveredUserAddress);
-            console.log(authenticationDto.address);
-            if (recoveredUserAddress != authenticationDto.address) {
-                console.log('3');
-                throw new BadRequestException();
-            }
+            // const serverWallet = new ethers.Wallet(
+            //     process.env.SERVER_PRIVATE_KEY,
+            // );
+            // const msgHash = ethers.hashMessage(
+            //     authenticationDto.serverSignature.msg,
+            // );
+            // if (msgHash != authenticationDto.serverSignature.msgHash) {
+            //     // console.log('1');
+            //     throw new BadRequestException();
+            // }
+            // const recoveredServerAddress = ethers.recoverAddress(
+            //     authenticationDto.serverSignature.msgHash,
+            //     authenticationDto.serverSignature.signature,
+            // );
+            // console.log(recoveredServerAddress);
+            // console.log(serverWallet.address);
+            // if (recoveredServerAddress != serverWallet.address) {
+            //     console.log('2');
+            //     throw new BadRequestException();
+            // }
+            // const recoveredUserAddress = ethers.recoverAddress(
+            //     authenticationDto.serverSignature.msgHash,
+            //     authenticationDto.signature,
+            // );
+            // console.log(recoveredUserAddress);
+            // console.log(authenticationDto.address);
+            // if (recoveredUserAddress != authenticationDto.address) {
+            //     console.log('3');
+            //     throw new BadRequestException();
+            // }
 
             const payload: JwtPayload = {
                 sub: authenticationDto.address,
@@ -74,6 +74,7 @@ export class AuthService {
         const signature = await serverWallet.signMessage(
             Uint8Array.from(Buffer.from(msgHash.slice(2), 'hex')),
         );
+        console.log(signature);
         const serverSignature: ServerSignature = {
             msg: msg,
             msgHash: msgHash,
