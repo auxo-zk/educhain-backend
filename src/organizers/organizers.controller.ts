@@ -70,7 +70,7 @@ export class OrganizersController {
         return await this.organizersService.getOrganizer(address);
     }
 
-    @Post()
+    @Post('create-campaign-ipfs-hash')
     @ApiTags('Organizer')
     @ApiBearerAuth('access-token')
     @UseGuards(AuthGuard)
