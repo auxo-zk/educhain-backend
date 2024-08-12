@@ -71,7 +71,7 @@ export class OrganizersController {
     }
 
     @Post()
-    @ApiTags('Campaign')
+    @ApiTags('Organizer')
     @ApiBearerAuth('access-token')
     @UseGuards(AuthGuard)
     async createCampaign(
