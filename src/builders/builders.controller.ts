@@ -72,7 +72,7 @@ export class BuildersController {
         return await this.buildersService.getBuilder(address);
     }
 
-    @Get('drafts')
+    @Get('drafts/all')
     @ApiTags('Builder')
     @ApiBearerAuth('access-token')
     @UseGuards(AuthGuard)
