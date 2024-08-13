@@ -11,7 +11,10 @@ export class Organizer {
     name: string;
 
     @Prop()
-    website: string;
+    role: string;
+
+    @Prop()
+    link: string;
 
     @Prop()
     description: string;

@@ -27,8 +27,8 @@ export class AuthService {
                 authenticationDto.serverSignature.msg,
                 authenticationDto.serverSignature.signature,
             );
-            console.log(recoveredServerAddress);
-            console.log(serverWallet.address);
+            // console.log(recoveredServerAddress);
+            // console.log(serverWallet.address);
             if (recoveredServerAddress != serverWallet.address) {
                 // console.log('1');
                 throw new BadRequestException();

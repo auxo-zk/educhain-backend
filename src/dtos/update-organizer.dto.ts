@@ -4,8 +4,11 @@ export class UpdateOrganizerDto {
     @IsString()
     name: string;
 
+    @IsString()
+    role: string;
+
     @IsUrl()
-    website: string;
+    link: string;
 
     @IsString()
     description: string;

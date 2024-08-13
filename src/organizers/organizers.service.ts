@@ -35,7 +35,8 @@ export class OrganizersService {
                 {
                     address: jwtPayload.sub,
                     name: updateOrganizerDto.name,
-                    website: updateOrganizerDto.website,
+                    role: updateOrganizerDto.role,
+                    link: updateOrganizerDto.link,
                     description: updateOrganizerDto.description,
                 },
                 { new: true, upsert: true },
