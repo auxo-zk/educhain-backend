@@ -9,7 +9,7 @@ import {
 } from 'src/entities/governor.entity';
 import { TokenEntity } from 'src/entities/token.entity';
 
-@Controller('governors')
+@Controller('non-privacy/governors')
 export class GovernorController {
     constructor(private readonly governorService: GovernorService) {}
 

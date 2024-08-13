@@ -16,8 +16,8 @@ import { OrganizersService } from './organizers/organizers.service';
 import { JwtModule } from '@nestjs/jwt';
 import { Builder, BuilderSchema } from './schemas/builder.schema';
 import { Organizer, OrganizerSchema } from './schemas/organizer.schema';
-import { ObjectStorageController } from './non-privacy/object-storage/object-storage.controller';
-import { ObjectStorageService } from './non-privacy/object-storage/object-storage.service';
+import { ObjectStorageController } from './object-storage/object-storage.controller';
+import { ObjectStorageService } from './object-storage/object-storage.service';
 import { CourseDraft, CourseDraftSchema } from './schemas/course-draft';
 
 @Module({

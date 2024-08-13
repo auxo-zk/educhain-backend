@@ -10,7 +10,7 @@ import { CreateCourseDraftDto } from 'src/dtos/create-course-draft.dto';
 import { UpdateBuilderDto } from 'src/dtos/update-builder.dto';
 import { UpdateCourseDraftDto } from 'src/dtos/update-course-draft.dto';
 import { JwtPayload } from 'src/interfaces/jwt-payload.interface';
-import { ObjectStorageService } from 'src/non-privacy/object-storage/object-storage.service';
+import { ObjectStorageService } from 'src/object-storage/object-storage.service';
 import { Builder } from 'src/schemas/builder.schema';
 import { CourseDraft } from 'src/schemas/course-draft';
 

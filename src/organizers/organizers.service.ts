@@ -11,7 +11,7 @@ import { UpdateOrganizerDto } from 'src/dtos/update-organizer.dto';
 import { IpfsResponse } from 'src/entities/ipfs-response.entity';
 import { JwtPayload } from 'src/interfaces/jwt-payload.interface';
 import { Ipfs } from 'src/ipfs/ipfs';
-import { ObjectStorageService } from 'src/non-privacy/object-storage/object-storage.service';
+import { ObjectStorageService } from 'src/object-storage/object-storage.service';
 import { Organizer } from 'src/schemas/organizer.schema';
 
 @Injectable()
