@@ -20,7 +20,7 @@ export class GovernorService {
     private readonly governorFactory: GovernorFactory;
 
     constructor(private readonly network: Network) {
-        this.provider = this.network.getEduchainProvider();
+        this.provider = this.network.getDefaultProvider();
         this.governorFactory = this.network.getGovernorFactoryContract(
             this.provider,
         );

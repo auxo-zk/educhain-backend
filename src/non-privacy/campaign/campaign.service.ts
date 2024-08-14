@@ -11,7 +11,7 @@ export class CampaignService implements OnModuleInit {
     private readonly campaign: Campaign;
 
     constructor(private readonly network: Network) {
-        this.provider = this.network.getEduchainProvider();
+        this.provider = this.network.getDefaultProvider();
         this.campaign = this.network.getCampaignContract(this.provider);
     }
 

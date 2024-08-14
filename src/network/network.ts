@@ -20,6 +20,10 @@ import {
 export class Network {
     constructor() {}
 
+    getDefaultProvider(): JsonRpcProvider {
+        return this.getEduchainProvider();
+    }
+
     getLocalHardhatProvider(): JsonRpcProvider {
         return new ethers.JsonRpcProvider('http://127.0.0.1:8545/');
     }
