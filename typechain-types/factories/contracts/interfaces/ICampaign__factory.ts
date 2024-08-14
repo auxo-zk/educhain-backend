@@ -92,7 +92,13 @@ const _abi = [
     type: "event",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "campaignId",
+        type: "uint256",
+      },
+    ],
     name: "allocateFunds",
     outputs: [],
     stateMutability: "nonpayable",
@@ -134,6 +140,11 @@ const _abi = [
         type: "bool",
       },
       {
+        internalType: "address",
+        name: "tokenRaising",
+        type: "address",
+      },
+      {
         internalType: "uint256[]",
         name: "governorIds",
         type: "uint256[]",
@@ -143,23 +154,20 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "founder",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
+        name: "campaignId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
         name: "governorId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
         type: "uint256",
       },
     ],
@@ -200,6 +208,21 @@ const _abi = [
   },
   {
     inputs: [
+      {
+        internalType: "uint64",
+        name: "startFunding",
+        type: "uint64",
+      },
+      {
+        internalType: "uint64",
+        name: "duration",
+        type: "uint64",
+      },
+      {
+        internalType: "address",
+        name: "tokenRaising",
+        type: "address",
+      },
       {
         internalType: "bytes32",
         name: "descriptionHash",

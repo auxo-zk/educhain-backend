@@ -23,7 +23,18 @@ const _abi = [
     type: "event",
   },
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "token",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
     name: "createPool",
     outputs: [],
     stateMutability: "payable",

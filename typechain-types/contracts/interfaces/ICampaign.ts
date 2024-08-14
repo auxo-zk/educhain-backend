@@ -28,7 +28,6 @@ export interface ICampaignInterface extends Interface {
     nameOrSignature:
       | "allocateFunds"
       | "campaignData"
-      | "founder"
       | "fund"
       | "joinCampaign"
       | "launchCampaign"
@@ -44,21 +43,23 @@ export interface ICampaignInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "allocateFunds",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignData",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "founder", values?: undefined): string;
-  encodeFunctionData(functionFragment: "fund", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "fund",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "joinCampaign",
     values: [BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "launchCampaign",
-    values: [BytesLike]
+    values: [BigNumberish, BigNumberish, AddressLike, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -69,7 +70,6 @@ export interface ICampaignInterface extends Interface {
     functionFragment: "campaignData",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "founder", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "fund", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "joinCampaign",
@@ -190,26 +190,33 @@ export interface ICampaign extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  allocateFunds: TypedContractMethod<[], [void], "nonpayable">;
+  allocateFunds: TypedContractMethod<
+    [campaignId: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
   campaignData: TypedContractMethod<
     [campaignId: BigNumberish],
     [
-      [bigint, string, bigint, bigint, boolean, bigint[]] & {
+      [bigint, string, bigint, bigint, boolean, string, bigint[]] & {
         totalFunded: bigint;
         descriptionHash: string;
         fundStart: bigint;
         fundDuration: bigint;
         allocated: boolean;
+        tokenRaising: string;
         governorIds: bigint[];
       }
     ],
     "view"
   >;
 
-  founder: TypedContractMethod<[], [string], "view">;
-
-  fund: TypedContractMethod<[governorId: BigNumberish], [bigint], "payable">;
+  fund: TypedContractMethod<
+    [campaignId: BigNumberish, governorId: BigNumberish, amount: BigNumberish],
+    [bigint],
+    "payable"
+  >;
 
   joinCampaign: TypedContractMethod<
     [governorId: BigNumberish, governor: AddressLike],
@@ -218,7 +225,12 @@ export interface ICampaign extends BaseContract {
   >;
 
   launchCampaign: TypedContractMethod<
-    [descriptionHash: BytesLike],
+    [
+      startFunding: BigNumberish,
+      duration: BigNumberish,
+      tokenRaising: AddressLike,
+      descriptionHash: BytesLike
+    ],
     [bigint],
     "nonpayable"
   >;
@@ -229,29 +241,31 @@ export interface ICampaign extends BaseContract {
 
   getFunction(
     nameOrSignature: "allocateFunds"
-  ): TypedContractMethod<[], [void], "nonpayable">;
+  ): TypedContractMethod<[campaignId: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "campaignData"
   ): TypedContractMethod<
     [campaignId: BigNumberish],
     [
-      [bigint, string, bigint, bigint, boolean, bigint[]] & {
+      [bigint, string, bigint, bigint, boolean, string, bigint[]] & {
         totalFunded: bigint;
         descriptionHash: string;
         fundStart: bigint;
         fundDuration: bigint;
         allocated: boolean;
+        tokenRaising: string;
         governorIds: bigint[];
       }
     ],
     "view"
   >;
   getFunction(
-    nameOrSignature: "founder"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "fund"
-  ): TypedContractMethod<[governorId: BigNumberish], [bigint], "payable">;
+  ): TypedContractMethod<
+    [campaignId: BigNumberish, governorId: BigNumberish, amount: BigNumberish],
+    [bigint],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "joinCampaign"
   ): TypedContractMethod<
@@ -261,7 +275,16 @@ export interface ICampaign extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "launchCampaign"
-  ): TypedContractMethod<[descriptionHash: BytesLike], [bigint], "nonpayable">;
+  ): TypedContractMethod<
+    [
+      startFunding: BigNumberish,
+      duration: BigNumberish,
+      tokenRaising: AddressLike,
+      descriptionHash: BytesLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
 
   getEvent(
     key: "CampaignLaunched"

@@ -32,7 +32,7 @@ export interface IRevenuePoolFactoryInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "createPool",
-    values?: undefined
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "pool", values: [BigNumberish]): string;
   encodeFunctionData(
@@ -103,7 +103,11 @@ export interface IRevenuePoolFactory extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  createPool: TypedContractMethod<[], [void], "payable">;
+  createPool: TypedContractMethod<
+    [token: AddressLike, amount: BigNumberish],
+    [void],
+    "payable"
+  >;
 
   pool: TypedContractMethod<[poolIndex: BigNumberish], [string], "view">;
 
@@ -115,7 +119,11 @@ export interface IRevenuePoolFactory extends BaseContract {
 
   getFunction(
     nameOrSignature: "createPool"
-  ): TypedContractMethod<[], [void], "payable">;
+  ): TypedContractMethod<
+    [token: AddressLike, amount: BigNumberish],
+    [void],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "pool"
   ): TypedContractMethod<[poolIndex: BigNumberish], [string], "view">;

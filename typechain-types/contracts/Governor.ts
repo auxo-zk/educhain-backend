@@ -67,6 +67,7 @@ export interface GovernorInterface extends Interface {
       | "hasVoted"
       | "hashOperation"
       | "hashProposal"
+      | "increaseFundedAndMinted"
       | "joinCampaign"
       | "name"
       | "nextTokenId"
@@ -136,6 +137,10 @@ export interface GovernorInterface extends Interface {
     values: [AddressLike[], BigNumberish[], BytesLike[], BytesLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "increaseFundedAndMinted",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "joinCampaign",
     values?: undefined
   ): string;
@@ -182,7 +187,14 @@ export interface GovernorInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "propose",
-    values: [AddressLike[], BigNumberish[], BytesLike[], BytesLike]
+    values: [
+      AddressLike[],
+      BigNumberish[],
+      BytesLike[],
+      BytesLike,
+      BigNumberish,
+      BigNumberish
+    ]
   ): string;
   encodeFunctionData(functionFragment: "queue", values: [BigNumberish]): string;
   encodeFunctionData(
@@ -230,6 +242,10 @@ export interface GovernorInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "hashProposal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "increaseFundedAndMinted",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -508,6 +524,12 @@ export interface Governor extends BaseContract {
     "view"
   >;
 
+  increaseFundedAndMinted: TypedContractMethod<
+    [fundedAmount: BigNumberish, mintedAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   joinCampaign: TypedContractMethod<[], [void], "nonpayable">;
 
   name: TypedContractMethod<[], [string], "view">;
@@ -575,7 +597,9 @@ export interface Governor extends BaseContract {
       targets: AddressLike[],
       values: BigNumberish[],
       calldatas: BytesLike[],
-      descriptionHash: BytesLike
+      descriptionHash: BytesLike,
+      startTime: BigNumberish,
+      votingDuration: BigNumberish
     ],
     [bigint],
     "nonpayable"
@@ -668,6 +692,13 @@ export interface Governor extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "increaseFundedAndMinted"
+  ): TypedContractMethod<
+    [fundedAmount: BigNumberish, mintedAmount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "joinCampaign"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
@@ -724,7 +755,9 @@ export interface Governor extends BaseContract {
       targets: AddressLike[],
       values: BigNumberish[],
       calldatas: BytesLike[],
-      descriptionHash: BytesLike
+      descriptionHash: BytesLike,
+      startTime: BigNumberish,
+      votingDuration: BigNumberish
     ],
     [bigint],
     "nonpayable"

@@ -40,16 +40,11 @@ export declare namespace ICampaign {
 export interface CampaignInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "_founder"
       | "allocateFunds"
       | "campaignData"
-      | "clock"
+      | "campaignsOwn"
       | "courseData"
-      | "currentCampaignId"
-      | "founder"
       | "fund"
-      | "fundingDelay"
-      | "fundingPeriod"
       | "governorFactory"
       | "joinCampaign"
       | "launchCampaign"
@@ -65,33 +60,25 @@ export interface CampaignInterface extends Interface {
       | "GovernorJoined"
   ): EventFragment;
 
-  encodeFunctionData(functionFragment: "_founder", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "allocateFunds",
-    values?: undefined
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "campaignData",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "clock", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "campaignsOwn",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(
     functionFragment: "courseData",
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "currentCampaignId",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "founder", values?: undefined): string;
-  encodeFunctionData(functionFragment: "fund", values: [BigNumberish]): string;
-  encodeFunctionData(
-    functionFragment: "fundingDelay",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "fundingPeriod",
-    values?: undefined
+    functionFragment: "fund",
+    values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "governorFactory",
@@ -103,7 +90,7 @@ export interface CampaignInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "launchCampaign",
-    values: [BytesLike]
+    values: [BigNumberish, BigNumberish, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "nextCampaignId",
@@ -111,7 +98,6 @@ export interface CampaignInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "state", values: [BigNumberish]): string;
 
-  decodeFunctionResult(functionFragment: "_founder", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "allocateFunds",
     data: BytesLike
@@ -120,22 +106,12 @@ export interface CampaignInterface extends Interface {
     functionFragment: "campaignData",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "clock", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "campaignsOwn",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "courseData", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "currentCampaignId",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "founder", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "fund", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "fundingDelay",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "fundingPeriod",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "governorFactory",
     data: BytesLike
@@ -264,26 +240,29 @@ export interface Campaign extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  _founder: TypedContractMethod<[], [string], "view">;
-
-  allocateFunds: TypedContractMethod<[], [void], "nonpayable">;
+  allocateFunds: TypedContractMethod<
+    [campaignId: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
 
   campaignData: TypedContractMethod<
     [campaignId: BigNumberish],
     [
-      [bigint, string, bigint, bigint, boolean, bigint[]] & {
+      [bigint, string, bigint, bigint, boolean, string, bigint[]] & {
         totalFunded: bigint;
         descriptionHash: string;
         fundStart: bigint;
         fundDuration: bigint;
         allocated: boolean;
+        tokenRaising: string;
         governorIds: bigint[];
       }
     ],
     "view"
   >;
 
-  clock: TypedContractMethod<[], [bigint], "view">;
+  campaignsOwn: TypedContractMethod<[owner: AddressLike], [bigint[]], "view">;
 
   courseData: TypedContractMethod<
     [campaignId: BigNumberish, governorId: BigNumberish],
@@ -291,26 +270,27 @@ export interface Campaign extends BaseContract {
     "view"
   >;
 
-  currentCampaignId: TypedContractMethod<[], [bigint], "view">;
-
-  founder: TypedContractMethod<[], [string], "view">;
-
-  fund: TypedContractMethod<[governorId: BigNumberish], [bigint], "payable">;
-
-  fundingDelay: TypedContractMethod<[], [bigint], "view">;
-
-  fundingPeriod: TypedContractMethod<[], [bigint], "view">;
+  fund: TypedContractMethod<
+    [campaignId: BigNumberish, governorId: BigNumberish, amount: BigNumberish],
+    [bigint],
+    "payable"
+  >;
 
   governorFactory: TypedContractMethod<[], [string], "view">;
 
   joinCampaign: TypedContractMethod<
-    [governorId: BigNumberish, governor: AddressLike],
+    [campaignId: BigNumberish, governor: AddressLike],
     [bigint],
     "nonpayable"
   >;
 
   launchCampaign: TypedContractMethod<
-    [descriptionHash: BytesLike],
+    [
+      startFunding: BigNumberish,
+      duration: BigNumberish,
+      tokenRaising: AddressLike,
+      descriptionHash: BytesLike
+    ],
     [bigint],
     "nonpayable"
   >;
@@ -324,30 +304,28 @@ export interface Campaign extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "_founder"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "allocateFunds"
-  ): TypedContractMethod<[], [void], "nonpayable">;
+  ): TypedContractMethod<[campaignId: BigNumberish], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "campaignData"
   ): TypedContractMethod<
     [campaignId: BigNumberish],
     [
-      [bigint, string, bigint, bigint, boolean, bigint[]] & {
+      [bigint, string, bigint, bigint, boolean, string, bigint[]] & {
         totalFunded: bigint;
         descriptionHash: string;
         fundStart: bigint;
         fundDuration: bigint;
         allocated: boolean;
+        tokenRaising: string;
         governorIds: bigint[];
       }
     ],
     "view"
   >;
   getFunction(
-    nameOrSignature: "clock"
-  ): TypedContractMethod<[], [bigint], "view">;
+    nameOrSignature: "campaignsOwn"
+  ): TypedContractMethod<[owner: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "courseData"
   ): TypedContractMethod<
@@ -356,33 +334,34 @@ export interface Campaign extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "currentCampaignId"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "founder"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "fund"
-  ): TypedContractMethod<[governorId: BigNumberish], [bigint], "payable">;
-  getFunction(
-    nameOrSignature: "fundingDelay"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "fundingPeriod"
-  ): TypedContractMethod<[], [bigint], "view">;
+  ): TypedContractMethod<
+    [campaignId: BigNumberish, governorId: BigNumberish, amount: BigNumberish],
+    [bigint],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "governorFactory"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "joinCampaign"
   ): TypedContractMethod<
-    [governorId: BigNumberish, governor: AddressLike],
+    [campaignId: BigNumberish, governor: AddressLike],
     [bigint],
     "nonpayable"
   >;
   getFunction(
     nameOrSignature: "launchCampaign"
-  ): TypedContractMethod<[descriptionHash: BytesLike], [bigint], "nonpayable">;
+  ): TypedContractMethod<
+    [
+      startFunding: BigNumberish,
+      duration: BigNumberish,
+      tokenRaising: AddressLike,
+      descriptionHash: BytesLike
+    ],
+    [bigint],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "nextCampaignId"
   ): TypedContractMethod<[], [bigint], "view">;

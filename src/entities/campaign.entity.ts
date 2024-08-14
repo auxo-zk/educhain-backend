@@ -5,6 +5,7 @@ export class CampaignEntity {
     fundDuration: number;
     allocated: boolean;
     courses?: Course[];
+    tokenRaising: string;
 }
 
 export class Course {

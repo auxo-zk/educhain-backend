@@ -33,8 +33,9 @@ export class CampaignService implements OnModuleInit {
                 fundStart: Number(result[2]),
                 fundDuration: Number(result[3]),
                 allocated: Boolean(result[4]),
+                tokenRaising: result[5],
             };
-            const governorIds = result[5].map((governorId: bigint) =>
+            const governorIds = result[6].map((governorId: bigint) =>
                 Number(governorId),
             );
             promises = governorIds.map((governorId: number) =>
@@ -71,8 +72,9 @@ export class CampaignService implements OnModuleInit {
             fundStart: Number(result[2]),
             fundDuration: Number(result[3]),
             allocated: Boolean(result[4]),
+            tokenRaising: result[5],
         };
-        const governorIds = result[5].map((governorId: bigint) =>
+        const governorIds = result[6].map((governorId: bigint) =>
             Number(governorId),
         );
         const promises = governorIds.map((governorId) =>

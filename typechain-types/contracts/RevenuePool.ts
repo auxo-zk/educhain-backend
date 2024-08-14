@@ -31,6 +31,7 @@ export interface RevenuePoolInterface extends Interface {
       | "governor"
       | "nextTokenId"
       | "revenue"
+      | "token"
       | "totalFunded"
   ): FunctionFragment;
 
@@ -47,6 +48,7 @@ export interface RevenuePoolInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "revenue", values?: undefined): string;
+  encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalFunded",
     values?: undefined
@@ -60,6 +62,7 @@ export interface RevenuePoolInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "revenue", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalFunded",
     data: BytesLike
@@ -132,6 +135,8 @@ export interface RevenuePool extends BaseContract {
 
   revenue: TypedContractMethod<[], [bigint], "view">;
 
+  token: TypedContractMethod<[], [string], "view">;
+
   totalFunded: TypedContractMethod<[], [bigint], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -153,6 +158,9 @@ export interface RevenuePool extends BaseContract {
   getFunction(
     nameOrSignature: "revenue"
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "token"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "totalFunded"
   ): TypedContractMethod<[], [bigint], "view">;

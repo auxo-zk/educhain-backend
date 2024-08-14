@@ -10,3 +10,4 @@ export type { GovernorFactory } from "./GovernorFactory";
 export type { GovernorVotes } from "./GovernorVotes";
 export type { RevenuePool } from "./RevenuePool";
 export type { RevenuePoolFactory } from "./RevenuePoolFactory";
+export type { TokenToken } from "./TokenToken";

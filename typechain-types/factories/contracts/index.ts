@@ -9,3 +9,4 @@ export { GovernorFactory__factory } from "./GovernorFactory__factory";
 export { GovernorVotes__factory } from "./GovernorVotes__factory";
 export { RevenuePool__factory } from "./RevenuePool__factory";
 export { RevenuePoolFactory__factory } from "./RevenuePoolFactory__factory";
+export { TokenToken__factory } from "./TokenToken__factory";

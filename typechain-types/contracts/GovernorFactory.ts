@@ -27,6 +27,8 @@ export interface GovernorFactoryInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "createGovernor"
+      | "founderGovernorAddresses"
+      | "founderGovernorIds"
       | "governor"
       | "hasGovernor"
       | "nextGovernorId"
@@ -41,6 +43,14 @@ export interface GovernorFactoryInterface extends Interface {
   encodeFunctionData(
     functionFragment: "createGovernor",
     values: [string, string, string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "founderGovernorAddresses",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "founderGovernorIds",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "governor",
@@ -73,6 +83,14 @@ export interface GovernorFactoryInterface extends Interface {
 
   decodeFunctionResult(
     functionFragment: "createGovernor",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "founderGovernorAddresses",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "founderGovernorIds",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "governor", data: BytesLike): Result;
@@ -181,6 +199,18 @@ export interface GovernorFactory extends BaseContract {
     "payable"
   >;
 
+  founderGovernorAddresses: TypedContractMethod<
+    [founder: AddressLike],
+    [string[]],
+    "view"
+  >;
+
+  founderGovernorIds: TypedContractMethod<
+    [founder: AddressLike],
+    [bigint[]],
+    "view"
+  >;
+
   governor: TypedContractMethod<[governorId: BigNumberish], [string], "view">;
 
   hasGovernor: TypedContractMethod<
@@ -215,6 +245,12 @@ export interface GovernorFactory extends BaseContract {
     [bigint],
     "payable"
   >;
+  getFunction(
+    nameOrSignature: "founderGovernorAddresses"
+  ): TypedContractMethod<[founder: AddressLike], [string[]], "view">;
+  getFunction(
+    nameOrSignature: "founderGovernorIds"
+  ): TypedContractMethod<[founder: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "governor"
   ): TypedContractMethod<[governorId: BigNumberish], [string], "view">;

@@ -153,7 +153,14 @@ export interface IGovernorInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "propose",
-    values: [AddressLike[], BigNumberish[], BytesLike[], BytesLike]
+    values: [
+      AddressLike[],
+      BigNumberish[],
+      BytesLike[],
+      BytesLike,
+      BigNumberish,
+      BigNumberish
+    ]
   ): string;
   encodeFunctionData(functionFragment: "queue", values: [BigNumberish]): string;
   encodeFunctionData(
@@ -467,7 +474,9 @@ export interface IGovernor extends BaseContract {
       targets: AddressLike[],
       values: BigNumberish[],
       calldatas: BytesLike[],
-      descriptionHash: BytesLike
+      descriptionHash: BytesLike,
+      startTime: BigNumberish,
+      votingDuration: BigNumberish
     ],
     [bigint],
     "nonpayable"
@@ -574,7 +583,9 @@ export interface IGovernor extends BaseContract {
       targets: AddressLike[],
       values: BigNumberish[],
       calldatas: BytesLike[],
-      descriptionHash: BytesLike
+      descriptionHash: BytesLike,
+      startTime: BigNumberish,
+      votingDuration: BigNumberish
     ],
     [bigint],
     "nonpayable"
