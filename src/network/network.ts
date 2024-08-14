@@ -24,6 +24,12 @@ export class Network {
         return new ethers.JsonRpcProvider('http://127.0.0.1:8545/');
     }
 
+    getEduchainProvider(): JsonRpcProvider {
+        return new ethers.JsonRpcProvider(
+            'https://open-campus-codex-sepolia.drpc.org',
+        );
+    }
+
     getCampaignContract(provider: JsonRpcProvider): Campaign {
         const campaign = Campaign__factory.connect(
             ContractAddresses['non-privacy'].campaign,
