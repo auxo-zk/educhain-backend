@@ -8,6 +8,19 @@ import {
 } from 'class-validator';
 import { FileInformation } from 'src/entities/file-information.entity';
 
+class TokenInfo {
+    @IsOptional()
+    address: string;
+
+    @IsOptional()
+    name: string;
+
+    @IsOptional()
+    symbol: string;
+
+    @IsOptional()
+    decimals: number;
+}
 class CourseMember {
     @IsOptional()
     name?: string;
@@ -54,4 +67,8 @@ export class UpdateCourseDraftDto {
     @IsOptional()
     @Type(() => FileInformation)
     documents?: FileInformation[];
+
+    @IsOptional()
+    @Type(() => TokenInfo)
+    tokenFunding?: TokenInfo;
 }

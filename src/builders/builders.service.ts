@@ -103,7 +103,7 @@ export class BuildersService {
     }
 
     async createDraft(
-        createProjectDraftDto: CreateCourseDraftDto,
+        createCourseDraftDto: CreateCourseDraftDto,
         jwtPayload: JwtPayload,
     ): Promise<CourseDraft> {
         if (jwtPayload.role != AuthRoleEnum.BUILDER) {
@@ -111,23 +111,24 @@ export class BuildersService {
         } else {
             return await this.courseDraftModel.create({
                 address: jwtPayload.sub,
-                name: createProjectDraftDto.name,
-                avatarImage: createProjectDraftDto.avatarImage,
-                coverImage: createProjectDraftDto.coverImage,
-                publicKey: createProjectDraftDto.publicKey,
-                description: createProjectDraftDto.description,
-                problemStatement: createProjectDraftDto.problemStatement,
-                solution: createProjectDraftDto.solution,
-                challengeAndRisk: createProjectDraftDto.challengeAndRisk,
-                members: createProjectDraftDto.members,
-                documents: createProjectDraftDto.documents,
+                name: createCourseDraftDto.name,
+                avatarImage: createCourseDraftDto.avatarImage,
+                coverImage: createCourseDraftDto.coverImage,
+                publicKey: createCourseDraftDto.publicKey,
+                description: createCourseDraftDto.description,
+                problemStatement: createCourseDraftDto.problemStatement,
+                solution: createCourseDraftDto.solution,
+                challengeAndRisk: createCourseDraftDto.challengeAndRisk,
+                members: createCourseDraftDto.members,
+                documents: createCourseDraftDto.documents,
+                tokenFunding: createCourseDraftDto.tokenFunding,
             });
         }
     }
 
     async updateDraft(
         draftId: string,
-        updateProjectDraftDto: UpdateCourseDraftDto,
+        updateCourseDraftDto: UpdateCourseDraftDto,
         jwtPayload: JwtPayload,
     ): Promise<CourseDraft> {
         if (jwtPayload.role != AuthRoleEnum.BUILDER) {
@@ -141,18 +142,17 @@ export class BuildersService {
                 return await this.courseDraftModel.findOneAndUpdate(
                     { _id: draftId, address: jwtPayload.sub },
                     {
-                        name: updateProjectDraftDto.name,
-                        avatarImage: updateProjectDraftDto.avatarImage,
-                        coverImage: updateProjectDraftDto.coverImage,
-                        publicKey: updateProjectDraftDto.publicKey,
-                        description: updateProjectDraftDto.description,
-                        problemStatement:
-                            updateProjectDraftDto.problemStatement,
-                        solution: updateProjectDraftDto.solution,
-                        challengeAndRisk:
-                            updateProjectDraftDto.challengeAndRisk,
-                        members: updateProjectDraftDto.members,
-                        documents: updateProjectDraftDto.documents,
+                        name: updateCourseDraftDto.name,
+                        avatarImage: updateCourseDraftDto.avatarImage,
+                        coverImage: updateCourseDraftDto.coverImage,
+                        publicKey: updateCourseDraftDto.publicKey,
+                        description: updateCourseDraftDto.description,
+                        problemStatement: updateCourseDraftDto.problemStatement,
+                        solution: updateCourseDraftDto.solution,
+                        challengeAndRisk: updateCourseDraftDto.challengeAndRisk,
+                        members: updateCourseDraftDto.members,
+                        documents: updateCourseDraftDto.documents,
+                        tokenFunding: updateCourseDraftDto.tokenFunding,
                     },
                     { new: true, upsert: true },
                 );
