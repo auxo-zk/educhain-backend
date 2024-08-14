@@ -135,7 +135,7 @@ export class BuildersController {
     }
 
     @Post('create-course-ipfs-hash')
-    @ApiTags('Project')
+    @ApiTags('Builder')
     @ApiBearerAuth('access-token')
     @UseGuards(AuthGuard)
     async createProject(
