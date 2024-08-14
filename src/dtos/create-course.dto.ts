@@ -1,7 +1,26 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsString, IsUrl, ValidateNested } from 'class-validator';
+import {
+    IsArray,
+    IsNumber,
+    IsString,
+    IsUrl,
+    ValidateNested,
+} from 'class-validator';
 import { FileInformation } from 'src/entities/file-information.entity';
 
+class TokenInfo {
+    @IsString()
+    address: string;
+
+    @IsString()
+    name: string;
+
+    @IsString()
+    symbol: string;
+
+    @IsNumber()
+    decimals: number;
+}
 class CourseMember {
     @IsString()
     name: string;
@@ -41,4 +60,8 @@ export class CreateCourseDto {
     @ValidateNested({ each: true })
     @Type(() => FileInformation)
     documents: FileInformation[];
+
+    @ValidateNested()
+    @Type(() => TokenInfo)
+    tokenFunding: TokenInfo;
 }

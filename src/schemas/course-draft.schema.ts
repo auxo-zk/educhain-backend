@@ -3,6 +3,34 @@ import { IsNumber, IsString } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
 import { FileInformation } from 'src/entities/file-information.entity';
 
+class TokenInfo {
+    @Prop()
+    address: string;
+
+    @Prop()
+    name: string;
+
+    @Prop()
+    symbol: string;
+
+    @Prop()
+    decimals: number;
+}
+
+class CourseMember {
+    @Prop()
+    name?: string;
+
+    @Prop()
+    role?: string;
+
+    @Prop()
+    link?: string;
+
+    @Prop()
+    publicKey?: string;
+}
+
 @Schema({ versionKey: false })
 export class CourseDraft {
     @Prop({ index: true, required: true })
@@ -33,21 +61,13 @@ export class CourseDraft {
     challengeAndRisk?: string;
 
     @Prop()
-    members?: Member[];
+    members?: CourseMember[];
 
     @Prop({ type: FileInformation, default: [] })
     documents?: FileInformation[];
-}
 
-class Member {
-    @Prop()
-    name?: string;
-
-    @Prop()
-    role?: string;
-
-    @Prop()
-    link?: string;
+    @Prop({ type: TokenInfo })
+    tokenFunding: TokenInfo;
 }
 
 export type CourseDraftDocument = HydratedDocument<CourseDraft>;
