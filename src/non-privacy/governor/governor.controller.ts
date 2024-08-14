@@ -1,4 +1,11 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+} from '@nestjs/common';
 import { GovernorService } from './governor.service';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -8,6 +15,8 @@ import {
     RevenuePoolFactoryEntity,
 } from 'src/entities/governor.entity';
 import { TokenEntity } from 'src/entities/token.entity';
+import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
+import { ActionEntity } from 'src/entities/action.entity';
 
 @Controller('non-privacy/governors')
 export class GovernorController {
@@ -81,5 +90,15 @@ export class GovernorController {
         @Param('account') account: string,
     ): Promise<TokenEntity[]> {
         return await this.governorService.getTokens(governorId, account);
+    }
+
+    @Post('bytecode/create-revenue-pool')
+    @ApiTags('Governor')
+    async createRevenuePool(
+        @Body() createRevenuePoolDto: CreateRevenuePoolDto,
+    ): Promise<ActionEntity> {
+        return await this.governorService.createRevenuePool(
+            createRevenuePoolDto,
+        );
     }
 }

@@ -4,6 +4,8 @@ import {
     Injectable,
 } from '@nestjs/common';
 import { ethers, JsonRpcProvider } from 'ethers';
+import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
+import { ActionEntity } from 'src/entities/action.entity';
 import {
     GovernorEntity,
     ProposalEntity,
@@ -321,5 +323,50 @@ export class GovernorService {
             }
         }
         return tokenEntities;
+    }
+
+    async createRevenuePool(
+        createRevenuePoolDto: CreateRevenuePoolDto,
+    ): Promise<ActionEntity> {
+        const nextGovernorId = await this.governorFactory.nextGovernorId();
+        if (
+            createRevenuePoolDto.governorId < 0 ||
+            createRevenuePoolDto.governorId >= nextGovernorId
+        ) {
+            throw new BadRequestException();
+        }
+        try {
+            const governorAddress = await this.governorFactory.governor(
+                createRevenuePoolDto.governorId,
+            );
+            const governor = this.network.getGovernorContract(
+                this.provider,
+                governorAddress,
+            );
+
+            const revenuePoolFactoryAddress =
+                await governor.revenuePoolFactory();
+            const targets = [];
+            const values = [];
+            const calldatas = [];
+            targets.push(revenuePoolFactoryAddress);
+            values.push('0');
+            const ABI = ['function createPool(address token, uint256 amount)'];
+            const iface = new ethers.Interface(ABI);
+            const calldata = iface.encodeFunctionData('createPool', [
+                createRevenuePoolDto.tokenAddress,
+                createRevenuePoolDto.amount,
+            ]);
+            calldatas.push(calldata);
+            const actionEntity: ActionEntity = {
+                targets: targets,
+                values: values,
+                calldatas: calldatas,
+            };
+            return actionEntity;
+        } catch (err) {
+            console.log(err);
+            throw new BadRequestException();
+        }
     }
 }
