@@ -18,7 +18,7 @@ import { Builder, BuilderSchema } from './schemas/builder.schema';
 import { Organizer, OrganizerSchema } from './schemas/organizer.schema';
 import { ObjectStorageController } from './object-storage/object-storage.controller';
 import { ObjectStorageService } from './object-storage/object-storage.service';
-import { CourseDraft, CourseDraftSchema } from './schemas/course-draft';
+import { CourseDraft, CourseDraftSchema } from './schemas/course-draft.schema';
 
 @Module({
     imports: [

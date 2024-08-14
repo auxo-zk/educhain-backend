@@ -18,9 +18,11 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { UpdateBuilderDto } from 'src/dtos/update-builder.dto';
 import { Builder } from 'src/schemas/builder.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CourseDraft } from 'src/schemas/course-draft';
+import { CourseDraft } from 'src/schemas/course-draft.schema';
 import { UpdateCourseDraftDto } from 'src/dtos/update-course-draft.dto';
 import { CreateCourseDraftDto } from 'src/dtos/create-course-draft.dto';
+import { CreateCourseDto } from 'src/dtos/create-course.dto';
+import { IpfsResponse } from 'src/entities/ipfs-response.entity';
 
 @Controller('builders')
 export class BuildersController {
@@ -128,6 +130,20 @@ export class BuildersController {
     ): Promise<CourseDraft> {
         return await this.buildersService.createDraft(
             createCourseDraftDto,
+            req.user,
+        );
+    }
+
+    @Post('create-course-ipfs-hash')
+    @ApiTags('Project')
+    @ApiBearerAuth('access-token')
+    @UseGuards(AuthGuard)
+    async createProject(
+        @Body() createCourseDto: CreateCourseDto,
+        @Request() req: any,
+    ): Promise<IpfsResponse> {
+        return await this.buildersService.createCourse(
+            createCourseDto,
             req.user,
         );
     }
