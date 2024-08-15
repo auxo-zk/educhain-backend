@@ -112,6 +112,7 @@ export class BuildersService {
             return await this.courseDraftModel.create({
                 address: jwtPayload.sub,
                 name: createCourseDraftDto.name,
+                courseSymbol: createCourseDraftDto.courseSymbol,
                 avatarImage: createCourseDraftDto.avatarImage,
                 coverImage: createCourseDraftDto.coverImage,
                 publicKey: createCourseDraftDto.publicKey,
@@ -142,6 +143,7 @@ export class BuildersService {
                     { _id: draftId, address: jwtPayload.sub },
                     {
                         name: updateCourseDraftDto.name,
+                        courseSymbol: updateCourseDraftDto.courseSymbol,
                         avatarImage: updateCourseDraftDto.avatarImage,
                         coverImage: updateCourseDraftDto.coverImage,
                         publicKey: updateCourseDraftDto.publicKey,

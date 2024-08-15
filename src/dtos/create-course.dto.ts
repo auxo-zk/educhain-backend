@@ -39,6 +39,9 @@ export class CreateCourseDto {
     @IsString()
     name: string;
 
+    @IsString()
+    courseSymbol: string;
+
     @IsUrl()
     avatarImage: string;
 

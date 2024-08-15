@@ -41,6 +41,9 @@ export class CreateCourseDraftDto {
     name?: string;
 
     @IsOptional()
+    courseSymbol?: string;
+
+    @IsOptional()
     avatarImage?: string;
 
     @IsOptional()

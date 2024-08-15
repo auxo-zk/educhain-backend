@@ -40,6 +40,9 @@ export class UpdateCourseDraftDto {
     name?: string;
 
     @IsOptional()
+    courseSymbol?: string;
+
+    @IsOptional()
     avatarImage?: string;
 
     @IsOptional()

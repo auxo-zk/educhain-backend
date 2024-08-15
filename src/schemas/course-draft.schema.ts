@@ -40,6 +40,9 @@ export class CourseDraft {
     name?: string;
 
     @Prop()
+    courseSymbol?: string;
+
+    @Prop()
     avatarImage?: string;
 
     @Prop()
