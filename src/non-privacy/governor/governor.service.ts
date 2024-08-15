@@ -3,7 +3,7 @@ import {
     BadRequestException,
     Injectable,
 } from '@nestjs/common';
-import { ethers, JsonRpcProvider } from 'ethers';
+import { ethers, JsonRpcProvider, Provider } from 'ethers';
 import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
 import { ActionEntity } from 'src/entities/action.entity';
 import {
@@ -18,7 +18,7 @@ import { Governor, GovernorFactory } from 'typechain-types';
 
 @Injectable()
 export class GovernorService {
-    private readonly provider: JsonRpcProvider;
+    private readonly provider: Provider;
     private readonly governorFactory: GovernorFactory;
 
     constructor(private readonly network: Network) {

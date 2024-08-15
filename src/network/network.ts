@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ethers, JsonRpcProvider } from 'ethers';
+import { ethers, JsonRpcProvider, Provider, WebSocketProvider } from 'ethers';
 import { ContractAddresses } from 'src/constants';
 import {
     Campaign,
@@ -20,7 +20,7 @@ import {
 export class Network {
     constructor() {}
 
-    getDefaultProvider(): JsonRpcProvider {
+    getDefaultProvider(): Provider {
         return this.getEduchainProvider();
     }
 
@@ -28,13 +28,19 @@ export class Network {
         return new ethers.JsonRpcProvider('http://127.0.0.1:8545/');
     }
 
-    getEduchainProvider(): JsonRpcProvider {
-        return new ethers.JsonRpcProvider(
-            'https://open-campus-codex-sepolia.drpc.org',
+    getEduchainProvider(): Provider {
+        return new ethers.WebSocketProvider(
+            'wss://open-campus-codex-sepolia.drpc.org',
         );
+        // return new ethers.JsonRpcProvider(
+        //     'wss://open-campus-codex-sepolia.drpc.org',
+        // );
+        // return new ethers.Provider(
+        //     'https://open-campus-codex-sepolia.drpc.org',
+        // );
     }
 
-    getCampaignContract(provider: JsonRpcProvider): Campaign {
+    getCampaignContract(provider: Provider): Campaign {
         const campaign = Campaign__factory.connect(
             ContractAddresses['non-privacy'].campaign,
             provider,
@@ -42,7 +48,7 @@ export class Network {
         return campaign;
     }
 
-    getGovernorFactoryContract(provider: JsonRpcProvider): GovernorFactory {
+    getGovernorFactoryContract(provider: Provider): GovernorFactory {
         const governorFactory = GovernorFactory__factory.connect(
             ContractAddresses['non-privacy'].governorFactory,
             provider,
@@ -50,16 +56,13 @@ export class Network {
         return governorFactory;
     }
 
-    getGovernorContract(
-        provider: JsonRpcProvider,
-        contractAddress: string,
-    ): Governor {
+    getGovernorContract(provider: Provider, contractAddress: string): Governor {
         const governor = Governor__factory.connect(contractAddress, provider);
         return governor;
     }
 
     getRevenuePoolFactoryContract(
-        provider: JsonRpcProvider,
+        provider: Provider,
         contractAddress: string,
     ): RevenuePoolFactory {
         const revenuePoolFactory = RevenuePoolFactory__factory.connect(
@@ -70,7 +73,7 @@ export class Network {
     }
 
     getRevenuePoolContract(
-        provider: JsonRpcProvider,
+        provider: Provider,
         contractAddress: string,
     ): RevenuePool {
         const revenuePool = RevenuePool__factory.connect(
@@ -80,10 +83,7 @@ export class Network {
         return revenuePool;
     }
 
-    getTokenContract(
-        provider: JsonRpcProvider,
-        contractAddress: string,
-    ): ERC721Votes {
+    getTokenContract(provider: Provider, contractAddress: string): ERC721Votes {
         const token = ERC721Votes__factory.connect(contractAddress, provider);
         return token;
     }

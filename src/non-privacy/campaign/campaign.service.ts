@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
-import { JsonRpcProvider } from 'ethers';
+import { JsonRpcProvider, Provider } from 'ethers';
 import { CampaignState } from 'src/constants';
 import { CampaignEntity, Course } from 'src/entities/campaign.entity';
 import { Network } from 'src/network/network';
@@ -7,7 +7,7 @@ import { Campaign } from 'typechain-types';
 
 @Injectable()
 export class CampaignService implements OnModuleInit {
-    private readonly provider: JsonRpcProvider;
+    private readonly provider: Provider;
     private readonly campaign: Campaign;
 
     constructor(private readonly network: Network) {
