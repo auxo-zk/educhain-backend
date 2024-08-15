@@ -8,19 +8,19 @@ import {
 } from 'class-validator';
 import { FileInformation } from 'src/entities/file-information.entity';
 
-class TokenInfo {
-    @IsOptional()
-    address: string;
+// class TokenInfo {
+//     @IsOptional()
+//     address: string;
 
-    @IsOptional()
-    name: string;
+//     @IsOptional()
+//     name: string;
 
-    @IsOptional()
-    symbol: string;
+//     @IsOptional()
+//     symbol: string;
 
-    @IsOptional()
-    decimals: number;
-}
+//     @IsOptional()
+//     decimals: number;
+// }
 class CourseMember {
     @IsOptional()
     name?: string;
@@ -68,7 +68,7 @@ export class UpdateCourseDraftDto {
     @Type(() => FileInformation)
     documents?: FileInformation[];
 
-    @IsOptional()
-    @Type(() => TokenInfo)
-    tokenFunding?: TokenInfo;
+    // @IsOptional()
+    // @Type(() => TokenInfo)
+    // tokenFunding?: TokenInfo;
 }

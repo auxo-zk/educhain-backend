@@ -121,7 +121,6 @@ export class BuildersService {
                 challengeAndRisk: createCourseDraftDto.challengeAndRisk,
                 members: createCourseDraftDto.members,
                 documents: createCourseDraftDto.documents,
-                tokenFunding: createCourseDraftDto.tokenFunding,
             });
         }
     }
@@ -152,7 +151,6 @@ export class BuildersService {
                         challengeAndRisk: updateCourseDraftDto.challengeAndRisk,
                         members: updateCourseDraftDto.members,
                         documents: updateCourseDraftDto.documents,
-                        tokenFunding: updateCourseDraftDto.tokenFunding,
                     },
                     { new: true, upsert: true },
                 );

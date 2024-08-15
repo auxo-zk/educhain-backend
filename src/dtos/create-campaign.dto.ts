@@ -9,6 +9,19 @@ import {
     ValidateNested,
 } from 'class-validator';
 
+class TokenInfo {
+    @IsString()
+    address: string;
+
+    @IsString()
+    name: string;
+
+    @IsString()
+    symbol: string;
+
+    @IsNumber()
+    decimals: number;
+}
 class Timeline {
     @IsDate()
     @Type(() => Date)
@@ -76,4 +89,8 @@ export class CreateCampaignDto {
     @ValidateNested({ each: true })
     @Type(() => Question)
     questions: Question[];
+
+    @ValidateNested()
+    @Type(() => TokenInfo)
+    tokenFund: TokenInfo;
 }

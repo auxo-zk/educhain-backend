@@ -8,19 +8,19 @@ import {
 } from 'class-validator';
 import { FileInformation } from 'src/entities/file-information.entity';
 
-class TokenInfo {
-    @IsString()
-    address: string;
+// class TokenInfo {
+//     @IsString()
+//     address: string;
 
-    @IsString()
-    name: string;
+//     @IsString()
+//     name: string;
 
-    @IsString()
-    symbol: string;
+//     @IsString()
+//     symbol: string;
 
-    @IsNumber()
-    decimals: number;
-}
+//     @IsNumber()
+//     decimals: number;
+// }
 class CourseMember {
     @IsString()
     name: string;
@@ -61,7 +61,7 @@ export class CreateCourseDto {
     @Type(() => FileInformation)
     documents: FileInformation[];
 
-    @ValidateNested()
-    @Type(() => TokenInfo)
-    tokenFunding: TokenInfo;
+    // @ValidateNested()
+    // @Type(() => TokenInfo)
+    // tokenFunding: TokenInfo;
 }
