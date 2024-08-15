@@ -8,6 +8,7 @@ export type { ERC721Votes } from "./ERC721Votes";
 export type { Governor } from "./Governor";
 export type { GovernorFactory } from "./GovernorFactory";
 export type { GovernorVotes } from "./GovernorVotes";
+export type { Multicall3 } from "./Multicall3";
 export type { RevenuePool } from "./RevenuePool";
 export type { RevenuePoolFactory } from "./RevenuePoolFactory";
 export type { TokenToken } from "./TokenToken";

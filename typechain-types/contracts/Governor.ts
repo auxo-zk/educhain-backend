@@ -61,6 +61,7 @@ export interface GovernorInterface extends Interface {
       | "castVote"
       | "castVoteBatch"
       | "clock"
+      | "descriptionHash"
       | "execute"
       | "founder"
       | "governorId"
@@ -115,6 +116,10 @@ export interface GovernorInterface extends Interface {
     values: [BigNumberish, BigNumberish[], BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "clock", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "descriptionHash",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "execute",
     values: [BigNumberish]
@@ -232,6 +237,10 @@ export interface GovernorInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "clock", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "descriptionHash",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "founder", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "governorId", data: BytesLike): Result;
@@ -489,6 +498,8 @@ export interface Governor extends BaseContract {
 
   clock: TypedContractMethod<[], [bigint], "view">;
 
+  descriptionHash: TypedContractMethod<[], [string], "view">;
+
   execute: TypedContractMethod<[proposalId: BigNumberish], [void], "payable">;
 
   founder: TypedContractMethod<[], [string], "view">;
@@ -650,6 +661,9 @@ export interface Governor extends BaseContract {
   getFunction(
     nameOrSignature: "clock"
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "descriptionHash"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "execute"
   ): TypedContractMethod<[proposalId: BigNumberish], [void], "payable">;

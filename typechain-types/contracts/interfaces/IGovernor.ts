@@ -60,6 +60,7 @@ export interface IGovernorInterface extends Interface {
       | "cancel"
       | "castVote"
       | "castVoteBatch"
+      | "descriptionHash"
       | "execute"
       | "governorId"
       | "hashOperation"
@@ -101,6 +102,10 @@ export interface IGovernorInterface extends Interface {
   encodeFunctionData(
     functionFragment: "castVoteBatch",
     values: [BigNumberish, BigNumberish[], BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "descriptionHash",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "execute",
@@ -178,6 +183,10 @@ export interface IGovernorInterface extends Interface {
   decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "castVoteBatch",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "descriptionHash",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
@@ -400,6 +409,8 @@ export interface IGovernor extends BaseContract {
     "nonpayable"
   >;
 
+  descriptionHash: TypedContractMethod<[], [string], "view">;
+
   execute: TypedContractMethod<[proposalId: BigNumberish], [void], "payable">;
 
   governorId: TypedContractMethod<[], [bigint], "view">;
@@ -514,6 +525,9 @@ export interface IGovernor extends BaseContract {
     [bigint],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "descriptionHash"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "execute"
   ): TypedContractMethod<[proposalId: BigNumberish], [void], "payable">;

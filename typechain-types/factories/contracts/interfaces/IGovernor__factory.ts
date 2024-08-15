@@ -317,6 +317,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "descriptionHash",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",

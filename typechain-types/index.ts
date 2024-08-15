@@ -64,6 +64,8 @@ export type { IRevenuePool } from "./contracts/interfaces/IRevenuePool";
 export { IRevenuePool__factory } from "./factories/contracts/interfaces/IRevenuePool__factory";
 export type { IRevenuePoolFactory } from "./contracts/interfaces/IRevenuePoolFactory";
 export { IRevenuePoolFactory__factory } from "./factories/contracts/interfaces/IRevenuePoolFactory__factory";
+export type { Multicall3 } from "./contracts/Multicall3";
+export { Multicall3__factory } from "./factories/contracts/Multicall3__factory";
 export type { RevenuePool } from "./contracts/RevenuePool";
 export { RevenuePool__factory } from "./factories/contracts/RevenuePool__factory";
 export type { RevenuePoolFactory } from "./contracts/RevenuePoolFactory";

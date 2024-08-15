@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { JsonRpcProvider, Provider } from 'ethers';
 import { CampaignState } from 'src/constants';
 import { CampaignEntity, Course } from 'src/entities/campaign.entity';
+import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
 import { Campaign } from 'typechain-types';
 
@@ -10,7 +11,10 @@ export class CampaignService implements OnModuleInit {
     private readonly provider: Provider;
     private readonly campaign: Campaign;
 
-    constructor(private readonly network: Network) {
+    constructor(
+        private readonly network: Network,
+        private readonly ipfs: Ipfs,
+    ) {
         this.provider = this.network.getDefaultProvider();
         this.campaign = this.network.getCampaignContract(this.provider);
     }
@@ -35,6 +39,9 @@ export class CampaignService implements OnModuleInit {
                 allocated: Boolean(result[4]),
                 tokenRaising: result[5],
             };
+            campaignEntity.ipfsData = await this.ipfs.getData(
+                campaignEntity.descriptionHash,
+            );
             const governorIds = result[6].map((governorId: bigint) =>
                 Number(governorId),
             );
@@ -74,6 +81,9 @@ export class CampaignService implements OnModuleInit {
             allocated: Boolean(result[4]),
             tokenRaising: result[5],
         };
+        campaignEntity.ipfsData = await this.ipfs.getData(
+            campaignEntity.descriptionHash,
+        );
         const governorIds = result[6].map((governorId: bigint) =>
             Number(governorId),
         );

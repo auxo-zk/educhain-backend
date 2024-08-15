@@ -6,6 +6,7 @@ export class CampaignEntity {
     allocated: boolean;
     courses?: Course[];
     tokenRaising: string;
+    ipfsData?: object;
 }
 
 export class Course {

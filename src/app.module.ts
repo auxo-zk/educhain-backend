@@ -65,5 +65,6 @@ import { CourseDraft, CourseDraftSchema } from './schemas/course-draft.schema';
         OrganizersService,
         ObjectStorageService,
     ],
+    exports: [Ipfs],
 })
 export class AppModule {}

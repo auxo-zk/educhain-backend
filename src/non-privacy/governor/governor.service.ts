@@ -13,6 +13,7 @@ import {
     RevenuePoolFactoryEntity,
 } from 'src/entities/governor.entity';
 import { TokenEntity } from 'src/entities/token.entity';
+import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
 import { Governor, GovernorFactory } from 'typechain-types';
 
@@ -21,7 +22,10 @@ export class GovernorService {
     private readonly provider: Provider;
     private readonly governorFactory: GovernorFactory;
 
-    constructor(private readonly network: Network) {
+    constructor(
+        private readonly network: Network,
+        private readonly ipfs: Ipfs,
+    ) {
         this.provider = this.network.getDefaultProvider();
         this.governorFactory = this.network.getGovernorFactoryContract(
             this.provider,
@@ -48,6 +52,7 @@ export class GovernorService {
                     governor.revenuePoolFactory(),
                     governor.proposalCounter(),
                     governor.totalFunded(),
+                    governor.descriptionHash(),
                 ]);
 
                 const governorEntity: GovernorEntity = {
@@ -58,7 +63,11 @@ export class GovernorService {
                     revenuePoolFactoryAddress: result[4],
                     proposalCounter: Number(result[5]),
                     totalFunded: BigInt(result[6]).toString(),
+                    descriptionHash: result[7],
                 };
+                governorEntity.ipfsData = await this.ipfs.getData(
+                    governorEntity.descriptionHash,
+                );
                 return governorEntity;
             }),
         );
@@ -83,6 +92,7 @@ export class GovernorService {
             governor.revenuePoolFactory(),
             governor.proposalCounter(),
             governor.totalFunded(),
+            governor.descriptionHash(),
         ]);
 
         const governorEntity: GovernorEntity = {
@@ -93,7 +103,11 @@ export class GovernorService {
             revenuePoolFactoryAddress: result[4],
             proposalCounter: Number(result[5]),
             totalFunded: BigInt(result[6]).toString(),
+            descriptionHash: result[7],
         };
+        governorEntity.ipfsData = await this.ipfs.getData(
+            governorEntity.descriptionHash,
+        );
         return governorEntity;
     }
 

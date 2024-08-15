@@ -7,6 +7,7 @@ export { ERC721Votes__factory } from "./ERC721Votes__factory";
 export { Governor__factory } from "./Governor__factory";
 export { GovernorFactory__factory } from "./GovernorFactory__factory";
 export { GovernorVotes__factory } from "./GovernorVotes__factory";
+export { Multicall3__factory } from "./Multicall3__factory";
 export { RevenuePool__factory } from "./RevenuePool__factory";
 export { RevenuePoolFactory__factory } from "./RevenuePoolFactory__factory";
 export { TokenToken__factory } from "./TokenToken__factory";

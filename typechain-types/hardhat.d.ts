@@ -134,6 +134,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IVotes__factory>;
     getContractFactory(
+      name: "Multicall3",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Multicall3__factory>;
+    getContractFactory(
       name: "RevenuePool",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.RevenuePool__factory>;
@@ -297,6 +301,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IVotes>;
     getContractAt(
+      name: "Multicall3",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Multicall3>;
+    getContractAt(
       name: "RevenuePool",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -433,6 +442,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IVotes>;
     deployContract(
+      name: "Multicall3",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Multicall3>;
+    deployContract(
       name: "RevenuePool",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.RevenuePool>;
@@ -595,6 +608,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IVotes>;
+    deployContract(
+      name: "Multicall3",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Multicall3>;
     deployContract(
       name: "RevenuePool",
       args: any[],

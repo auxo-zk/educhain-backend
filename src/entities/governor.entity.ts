@@ -8,6 +8,8 @@ export class GovernorEntity {
     revenuePoolFactoryAddress: string;
     proposalCounter: number;
     totalFunded: string;
+    descriptionHash: string;
+    ipfsData?: object;
 }
 
 export class ProposalEntity {

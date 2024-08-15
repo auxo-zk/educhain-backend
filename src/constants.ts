@@ -1,7 +1,7 @@
 export const ContractAddresses = {
     'non-privacy': {
-        campaign: '0x8addD204ef28ebC1467f67AE9AB73a3d4b718459',
-        governorFactory: '0x5C1731263FB90AB046282aaa789109DdF15755ba',
+        campaign: '0x6dF9314e6849aC82bFe7b71898A0AA46134175bE',
+        governorFactory: '0xe04F111eE5616B7741b5d9aA8836528c29B837AE',
     },
 };
 
