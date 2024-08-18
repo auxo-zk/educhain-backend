@@ -4,6 +4,7 @@ import { CampaignState } from 'src/constants';
 import { CampaignEntity, Course } from 'src/entities/campaign.entity';
 import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
+import { Utilities } from 'src/utilities';
 import { Campaign } from 'typechain-types';
 
 @Injectable()
@@ -23,11 +24,13 @@ export class CampaignService implements OnModuleInit {
 
     async getCampaigns(): Promise<CampaignEntity[]> {
         const nextCampaignId = await this.campaign.nextCampaignId();
-        let promises = [];
+        // let promises = [];
+        const results: any[] = [];
         for (let i = 1; i < nextCampaignId; i++) {
-            promises.push(this.campaign.campaignData(i));
+            results.push(await this.campaign.campaignData(i));
         }
-        const results = await Promise.all(promises);
+        // const results = await Promise.all(promises);
+
         const campaigns: CampaignEntity[] = [];
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
@@ -40,17 +43,18 @@ export class CampaignService implements OnModuleInit {
                 tokenRaising: result[5],
             };
             campaignEntity.ipfsData = await this.ipfs.getData(
-                campaignEntity.descriptionHash,
+                Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),
             );
             const governorIds = result[6].map((governorId: bigint) =>
                 Number(governorId),
             );
-            promises = governorIds.map((governorId: number) =>
-                this.campaign.courseData(i + 1, governorId),
+            const tempResults = governorIds.map(
+                async (governorId: number) =>
+                    await this.campaign.courseData(i + 1, governorId),
             );
 
             const courses: Course[] = [];
-            const tempResults = await Promise.all(promises);
+            // const tempResults = await Promise.all(promises);
             for (let j = 0; j < governorIds.length; j++) {
                 const tempResult = tempResults[j];
                 const course: Course = {
@@ -82,16 +86,16 @@ export class CampaignService implements OnModuleInit {
             tokenRaising: result[5],
         };
         campaignEntity.ipfsData = await this.ipfs.getData(
-            campaignEntity.descriptionHash,
+            Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),
         );
         const governorIds = result[6].map((governorId: bigint) =>
             Number(governorId),
         );
-        const promises = governorIds.map((governorId) =>
-            this.campaign.courseData(campaignId, governorId),
+        const tempResults = governorIds.map(
+            async (governorId) =>
+                await this.campaign.courseData(campaignId, governorId),
         );
         const courses: Course[] = [];
-        const tempResults = await Promise.all(promises);
         for (let j = 0; j < governorIds.length; j++) {
             const tempResult = tempResults[j];
             const course: Course = {

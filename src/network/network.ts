@@ -21,14 +21,17 @@ export class Network {
     constructor() {}
 
     getDefaultProvider(): Provider {
-        return this.getEduchainProvider();
+        return this.getEducationJsonProvider();
     }
 
     getLocalHardhatProvider(): JsonRpcProvider {
         return new ethers.JsonRpcProvider('http://127.0.0.1:8545/');
     }
 
-    getEduchainProvider(): Provider {
+    getEduchainWebSocketProvider(): Provider {
+        const test = new ethers.WebSocketProvider(
+            'wss://open-campus-codex-sepolia.drpc.org',
+        );
         return new ethers.WebSocketProvider(
             'wss://open-campus-codex-sepolia.drpc.org',
         );
@@ -38,6 +41,12 @@ export class Network {
         // return new ethers.Provider(
         //     'https://open-campus-codex-sepolia.drpc.org',
         // );
+    }
+
+    getEducationJsonProvider(): Provider {
+        return new ethers.JsonRpcProvider(
+            'https://open-campus-codex-sepolia.drpc.org',
+        );
     }
 
     getCampaignContract(provider: Provider): Campaign {

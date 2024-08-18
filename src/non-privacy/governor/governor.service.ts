@@ -15,6 +15,7 @@ import {
 import { TokenEntity } from 'src/entities/token.entity';
 import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
+import { Utilities } from 'src/utilities';
 import { Governor, GovernorFactory } from 'typechain-types';
 
 @Injectable()
@@ -34,43 +35,45 @@ export class GovernorService {
 
     async getGovernors(): Promise<GovernorEntity[]> {
         const nextGovernorId = await this.governorFactory.nextGovernorId();
-        const promises = [];
+        // console.log(nextGovernorId);
+        const governorAddresses = [];
         for (let i = 0; i < nextGovernorId; i++) {
-            promises.push(this.governorFactory.governor(i));
+            governorAddresses.push(await this.governorFactory.governor(i));
         }
-        const governorAddresses = await Promise.all(promises);
         const governors = governorAddresses.map((governorAddress: string) =>
             this.network.getGovernorContract(this.provider, governorAddress),
         );
-        const governorEntities: GovernorEntity[] = await Promise.all(
-            governors.map(async (governor: Governor) => {
-                const result = await Promise.all([
-                    governor.governorId(),
-                    governor.getAddress(),
-                    governor.nextTokenId(),
-                    governor.token(),
-                    governor.revenuePoolFactory(),
-                    governor.proposalCounter(),
-                    governor.totalFunded(),
-                    governor.descriptionHash(),
-                ]);
-
-                const governorEntity: GovernorEntity = {
-                    governorId: Number(result[0]),
-                    address: result[1],
-                    nextTokenId: Number(result[2]),
-                    tokenAddress: result[3],
-                    revenuePoolFactoryAddress: result[4],
-                    proposalCounter: Number(result[5]),
-                    totalFunded: BigInt(result[6]).toString(),
-                    descriptionHash: result[7],
-                };
-                governorEntity.ipfsData = await this.ipfs.getData(
-                    governorEntity.descriptionHash,
-                );
-                return governorEntity;
-            }),
-        );
+        const governorEntities: GovernorEntity[] = [];
+        for (let i = 0; i < governors.length; i++) {
+            const governor = governors[i];
+            const result = [
+                await governor.governorId(),
+                await governor.getAddress(),
+                await governor.nextTokenId(),
+                await governor.token(),
+                await governor.revenuePoolFactory(),
+                await governor.proposalCounter(),
+                await governor.totalFunded(),
+                await governor.descriptionHash(),
+            ];
+            const governorEntity: GovernorEntity = {
+                governorId: Number(result[0]),
+                address: result[1].toString(),
+                nextTokenId: Number(result[2]),
+                tokenAddress: result[3].toString(),
+                revenuePoolFactoryAddress: result[4].toString(),
+                proposalCounter: Number(result[5]),
+                totalFunded: BigInt(result[6]).toString(),
+                descriptionHash: result[7].toString(),
+            };
+            governorEntity.ipfsData = await this.ipfs.getData(
+                Utilities.bytes32ToIpfsHash(governorEntity.descriptionHash),
+            );
+            // console.log(
+            //     Utilities.bytes32ToIpfsHash(governorEntity.descriptionHash),
+            // );
+            governorEntities.push(governorEntity);
+        }
         return governorEntities;
     }
 
@@ -84,29 +87,29 @@ export class GovernorService {
             this.provider,
             governorAddress,
         );
-        const result = await Promise.all([
-            governor.governorId(),
-            governor.getAddress(),
-            governor.nextTokenId(),
-            governor.token(),
-            governor.revenuePoolFactory(),
-            governor.proposalCounter(),
-            governor.totalFunded(),
-            governor.descriptionHash(),
-        ]);
+        const result = [
+            await governor.governorId(),
+            await governor.getAddress(),
+            await governor.nextTokenId(),
+            await governor.token(),
+            await governor.revenuePoolFactory(),
+            await governor.proposalCounter(),
+            await governor.totalFunded(),
+            await governor.descriptionHash(),
+        ];
 
         const governorEntity: GovernorEntity = {
             governorId: Number(result[0]),
-            address: result[1],
+            address: result[1].toString(),
             nextTokenId: Number(result[2]),
-            tokenAddress: result[3],
-            revenuePoolFactoryAddress: result[4],
+            tokenAddress: result[3].toString(),
+            revenuePoolFactoryAddress: result[4].toString(),
             proposalCounter: Number(result[5]),
             totalFunded: BigInt(result[6]).toString(),
-            descriptionHash: result[7],
+            descriptionHash: result[7].toString(),
         };
         governorEntity.ipfsData = await this.ipfs.getData(
-            governorEntity.descriptionHash,
+            Utilities.bytes32ToIpfsHash(governorEntity.descriptionHash),
         );
         return governorEntity;
     }
@@ -122,15 +125,14 @@ export class GovernorService {
             governorAddress,
         );
         const proposalCounter = await governor.proposalCounter();
-        const promises = [];
+        const proposalIds = [];
         for (
             let proposalIndex = 0;
             proposalIndex < proposalCounter;
             proposalIndex++
         ) {
-            promises.push(governor.proposalIds(proposalIndex));
+            proposalIds.push(await governor.proposalIds(proposalIndex));
         }
-        const proposalIds = await Promise.all(promises);
         const proposals: ProposalEntity[] = [];
         for (
             let proposalIndex = 0;
@@ -138,11 +140,11 @@ export class GovernorService {
             proposalIndex++
         ) {
             const proposalId = proposalIds[proposalIndex];
-            const result = await Promise.all([
-                governor.proposalCore(proposalId),
-                governor.proposalVotes(proposalId),
-                governor.state(proposalId),
-            ]);
+            const result = [
+                await governor.proposalCore(proposalId),
+                await governor.proposalVotes(proposalId),
+                await governor.state(proposalId),
+            ];
             const proposalCore = result[0];
             const proposalVotes = result[1];
             const proposalState = result[2];
@@ -184,16 +186,14 @@ export class GovernorService {
             revenuePoolFactoryAddress,
         );
         const poolCounter = await revenuePoolFactory.poolCounter();
-        const promises = [];
+        const poolAddresses = [];
         for (let i = 0; i < poolCounter; i++) {
-            promises.push(revenuePoolFactory.pool(i));
+            poolAddresses.push(await revenuePoolFactory.pool(i));
         }
         const revenuePoolFactoryEntity: RevenuePoolFactoryEntity = {
             address: revenuePoolFactoryAddress,
             poolCounter: Number(poolCounter),
-            poolAddresses: (await Promise.all(promises)).map(
-                (address: string) => address,
-            ),
+            poolAddresses: poolAddresses,
         };
 
         return revenuePoolFactoryEntity;
@@ -226,11 +226,11 @@ export class GovernorService {
             this.provider,
             poolAddress,
         );
-        const result = await Promise.all([
-            revenuePool.revenue(),
-            this.provider.getBalance(poolAddress),
-            revenuePool.nextTokenId(),
-        ]);
+        const result = [
+            await revenuePool.revenue(),
+            await this.provider.getBalance(poolAddress),
+            await revenuePool.nextTokenId(),
+        ];
 
         const revenuePoolEntity: RevenuePoolEntity = {
             poolIndex: poolIndex,
