@@ -35,12 +35,14 @@ export class CampaignService implements OnModuleInit {
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
             const campaignEntity: CampaignEntity = {
+                campaignId: i,
                 totalFunded: BigInt(result[0]).toString(),
                 descriptionHash: result[1],
                 fundStart: Number(result[2]),
                 fundDuration: Number(result[3]),
                 allocated: Boolean(result[4]),
                 tokenRaising: result[5],
+                state: Number(await this.campaign.state(i)),
             };
             campaignEntity.ipfsData = await this.ipfs.getData(
                 Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),
@@ -73,17 +75,19 @@ export class CampaignService implements OnModuleInit {
 
     async getCampaign(campaignId: number): Promise<CampaignEntity> {
         const nextCampaignId = await this.campaign.nextCampaignId();
-        if (campaignId <= 0 || campaignId >= nextCampaignId) {
+        if (campaignId < 0 || campaignId >= nextCampaignId) {
             throw new BadRequestException();
         }
         const result = await this.campaign.campaignData(campaignId);
         const campaignEntity: CampaignEntity = {
+            campaignId: campaignId,
             totalFunded: BigInt(result[0]).toString(),
             descriptionHash: result[1],
             fundStart: Number(result[2]),
             fundDuration: Number(result[3]),
             allocated: Boolean(result[4]),
             tokenRaising: result[5],
+            state: Number(await this.campaign.state(campaignId)),
         };
         campaignEntity.ipfsData = await this.ipfs.getData(
             Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),

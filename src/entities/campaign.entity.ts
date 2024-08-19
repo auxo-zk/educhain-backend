@@ -1,4 +1,7 @@
+import { CampaignState } from 'src/constants';
+
 export class CampaignEntity {
+    campaignId: number;
     totalFunded: string;
     descriptionHash: string;
     fundStart: number;
@@ -7,6 +10,7 @@ export class CampaignEntity {
     courses?: Course[];
     tokenRaising: string;
     ipfsData?: object;
+    state: CampaignState;
 }
 
 export class Course {
