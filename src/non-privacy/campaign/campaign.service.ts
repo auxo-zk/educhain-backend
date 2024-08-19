@@ -114,12 +114,28 @@ export class CampaignService implements OnModuleInit {
         return campaignEntity;
     }
 
+    async getCampaignsByOrganizer(address: string): Promise<CampaignEntity[]> {
+        try {
+            const campaignIds = await this.campaign.campaignsOwn(address);
+            const campaignEntities: CampaignEntity[] = [];
+            for (let i = 0; i < campaignIds.length; i++) {
+                const campaignId = Number(campaignIds[i]);
+                const campaignEntity = await this.getCampaign(campaignId);
+                campaignEntities.push(campaignEntity);
+            }
+            return campaignEntities;
+        } catch (err) {
+            throw new BadRequestException();
+        }
+    }
+
     async getCampaignState(campaignId: number): Promise<CampaignState> {
         const nextCampaignId = await this.campaign.nextCampaignId();
         if (campaignId <= 0 || campaignId >= nextCampaignId) {
             throw new BadRequestException();
         }
         const state = Number(await this.campaign.state(campaignId));
+
         return state;
     }
 }

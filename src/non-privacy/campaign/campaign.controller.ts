@@ -1,9 +1,10 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { Network } from 'src/network/network';
 import { ApiTags } from '@nestjs/swagger';
 import { CampaignEntity } from 'src/entities/campaign.entity';
 import { CampaignState } from 'src/constants';
+import { GetCampaignsDto } from 'src/dtos/get-campaigns.dto';
 
 @Controller('non-privacy/campaigns')
 export class CampaignController {
@@ -14,8 +15,16 @@ export class CampaignController {
 
     @Get('')
     @ApiTags('Campaign')
-    async getCampaigns(): Promise<CampaignEntity[]> {
-        return await this.campaignService.getCampaigns();
+    async getCampaigns(
+        @Query() getCampaignsDto: GetCampaignsDto,
+    ): Promise<CampaignEntity[]> {
+        if (getCampaignsDto.organizer) {
+            return await this.campaignService.getCampaignsByOrganizer(
+                getCampaignsDto.organizer,
+            );
+        } else {
+            return await this.campaignService.getCampaigns();
+        }
     }
 
     @Get(':campaignId')
