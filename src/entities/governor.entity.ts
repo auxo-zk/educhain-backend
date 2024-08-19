@@ -3,6 +3,7 @@ import { ProposalState } from 'src/constants';
 export class GovernorEntity {
     governorId: number;
     address: string;
+    founder: string;
     nextTokenId: number;
     tokenAddress: string;
     revenuePoolFactoryAddress: string;

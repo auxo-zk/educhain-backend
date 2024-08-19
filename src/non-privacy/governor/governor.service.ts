@@ -50,6 +50,7 @@ export class GovernorService {
             const result = [
                 await governor.governorId(),
                 await governor.getAddress(),
+                await governor.founder(),
                 await governor.nextTokenId(),
                 await governor.token(),
                 await governor.revenuePoolFactory(),
@@ -60,12 +61,13 @@ export class GovernorService {
             const governorEntity: GovernorEntity = {
                 governorId: Number(result[0]),
                 address: result[1].toString(),
-                nextTokenId: Number(result[2]),
-                tokenAddress: result[3].toString(),
-                revenuePoolFactoryAddress: result[4].toString(),
-                proposalCounter: Number(result[5]),
-                totalFunded: BigInt(result[6]).toString(),
-                descriptionHash: result[7].toString(),
+                founder: result[2].toString(),
+                nextTokenId: Number(result[3]),
+                tokenAddress: result[4].toString(),
+                revenuePoolFactoryAddress: result[5].toString(),
+                proposalCounter: Number(result[6]),
+                totalFunded: BigInt(result[7]).toString(),
+                descriptionHash: result[8].toString(),
             };
             governorEntity.ipfsData = await this.ipfs.getData(
                 Utilities.bytes32ToIpfsHash(governorEntity.descriptionHash),
@@ -91,6 +93,7 @@ export class GovernorService {
         const result = [
             await governor.governorId(),
             await governor.getAddress(),
+            await governor.founder(),
             await governor.nextTokenId(),
             await governor.token(),
             await governor.revenuePoolFactory(),
@@ -102,12 +105,13 @@ export class GovernorService {
         const governorEntity: GovernorEntity = {
             governorId: Number(result[0]),
             address: result[1].toString(),
-            nextTokenId: Number(result[2]),
-            tokenAddress: result[3].toString(),
-            revenuePoolFactoryAddress: result[4].toString(),
-            proposalCounter: Number(result[5]),
-            totalFunded: BigInt(result[6]).toString(),
-            descriptionHash: result[7].toString(),
+            founder: result[2].toString(),
+            nextTokenId: Number(result[3]),
+            tokenAddress: result[4].toString(),
+            revenuePoolFactoryAddress: result[5].toString(),
+            proposalCounter: Number(result[6]),
+            totalFunded: BigInt(result[7]).toString(),
+            descriptionHash: result[8].toString(),
         };
         governorEntity.ipfsData = await this.ipfs.getData(
             Utilities.bytes32ToIpfsHash(governorEntity.descriptionHash),
