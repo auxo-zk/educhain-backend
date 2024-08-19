@@ -17,6 +17,7 @@ import {
 import { TokenEntity } from 'src/entities/token.entity';
 import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
 import { ActionEntity } from 'src/entities/action.entity';
+import { CreateVestingDto } from 'src/dtos/create-vesting.dto';
 
 @Controller('non-privacy/governors')
 export class GovernorController {
@@ -100,5 +101,13 @@ export class GovernorController {
         return await this.governorService.createRevenuePool(
             createRevenuePoolDto,
         );
+    }
+
+    @Post('bytecode/create-vesting')
+    @ApiTags('Governor')
+    async createVesting(
+        @Body() createVestingDto: CreateVestingDto,
+    ): Promise<ActionEntity> {
+        return await this.governorService.createVesting(createVestingDto);
     }
 }

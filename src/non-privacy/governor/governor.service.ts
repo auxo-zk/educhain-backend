@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { ethers, JsonRpcProvider, Provider } from 'ethers';
 import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
+import { CreateVestingDto } from 'src/dtos/create-vesting.dto';
 import { ActionEntity } from 'src/entities/action.entity';
 import {
     GovernorEntity,
@@ -380,6 +381,46 @@ export class GovernorService {
             return actionEntity;
         } catch (err) {
             console.log(err);
+            throw new BadRequestException();
+        }
+    }
+
+    async createVesting(createVestingDto: CreateVestingDto) {
+        const nextGovernorId = await this.governorFactory.nextGovernorId();
+        if (
+            createVestingDto.governorId < 0 ||
+            createVestingDto.governorId >= nextGovernorId
+        ) {
+            throw new BadRequestException();
+        }
+
+        try {
+            // const governorAddress = await this.governorFactory.governor(
+            //     createVestingDto.governorId,
+            // );
+            // const governor = this.network.getGovernorContract(
+            //     this.provider,
+            //     governorAddress,
+            // );
+            const targets = [];
+            const values = [];
+            const calldatas = [];
+            const ABI = ['function transfer(address to, uint256 value)'];
+            const iface = new ethers.Interface(ABI);
+            const calldata = iface.encodeFunctionData('createPool', [
+                createVestingDto.receiver,
+                createVestingDto.amount,
+            ]);
+            targets.push(createVestingDto.tokenAddress);
+            values.push('0');
+            calldatas.push(calldata);
+            const actionEntity: ActionEntity = {
+                targets: targets,
+                values: values,
+                calldatas: calldatas,
+            };
+            return actionEntity;
+        } catch (err) {
             throw new BadRequestException();
         }
     }
