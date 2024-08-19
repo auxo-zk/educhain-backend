@@ -1,10 +1,18 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+    Query,
+} from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { Network } from 'src/network/network';
 import { ApiTags } from '@nestjs/swagger';
 import { CampaignEntity } from 'src/entities/campaign.entity';
 import { CampaignState } from 'src/constants';
 import { GetCampaignsDto } from 'src/dtos/get-campaigns.dto';
+import { CreateJoinCampaignDto } from 'src/dtos/create-join-campaign.dto';
 
 @Controller('non-privacy/campaigns')
 export class CampaignController {
@@ -25,6 +33,16 @@ export class CampaignController {
         } else {
             return await this.campaignService.getCampaigns();
         }
+    }
+
+    @Post('create-join-campaign-ipfs-hash')
+    @ApiTags('Campaign')
+    async createJoinCampaignIpfsHash(
+        @Query() createJoinCampaignDto: CreateJoinCampaignDto,
+    ) {
+        await this.campaignService.createJoinCampaignIpfsHash(
+            createJoinCampaignDto,
+        );
     }
 
     @Get(':campaignId')

@@ -1,7 +1,9 @@
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { JsonRpcProvider, Provider } from 'ethers';
 import { CampaignState } from 'src/constants';
+import { CreateJoinCampaignDto } from 'src/dtos/create-join-campaign.dto';
 import { CampaignEntity, Course } from 'src/entities/campaign.entity';
+import { IpfsResponse } from 'src/entities/ipfs-response.entity';
 import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
 import { Utilities } from 'src/utilities';
@@ -21,6 +23,13 @@ export class CampaignService implements OnModuleInit {
     }
 
     onModuleInit() {}
+
+    async createJoinCampaignIpfsHash(
+        createJoinCampaignDto: CreateJoinCampaignDto,
+    ): Promise<IpfsResponse> {
+        const result = await this.ipfs.uploadJson(createJoinCampaignDto);
+        return result;
+    }
 
     async getCampaigns(): Promise<CampaignEntity[]> {
         const nextCampaignId = await this.campaign.nextCampaignId();
@@ -64,7 +73,11 @@ export class CampaignService implements OnModuleInit {
                     governor: tempResult[0],
                     fund: BigInt(tempResult[1]).toString(),
                     minted: Number(tempResult[2]),
+                    descriptionHash: tempResult[3],
                 };
+                course.ipfsData = await this.ipfs.getData(
+                    course.descriptionHash,
+                );
                 courses.push(course);
             }
             campaignEntity.courses = courses;
@@ -107,7 +120,11 @@ export class CampaignService implements OnModuleInit {
                 governor: tempResult[0],
                 fund: BigInt(tempResult[1]).toString(),
                 minted: Number(tempResult[2]),
+                descriptionHash: tempResult[3],
             };
+            course.ipfsData = await this.ipfs.getData(
+                Utilities.bytes32ToIpfsHash(course.descriptionHash),
+            );
             courses.push(course);
         }
         campaignEntity.courses = courses;

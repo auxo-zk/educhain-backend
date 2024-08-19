@@ -18,4 +18,6 @@ export class Course {
     governor: string;
     fund: string;
     minted: number;
+    descriptionHash: string;
+    ipfsData?: object;
 }
