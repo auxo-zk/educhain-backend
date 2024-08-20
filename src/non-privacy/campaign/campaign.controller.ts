@@ -14,6 +14,7 @@ import { CampaignEntity } from 'src/entities/campaign.entity';
 import { CampaignState } from 'src/constants';
 import { GetCampaignsDto } from 'src/dtos/get-campaigns.dto';
 import { CreateJoinCampaignDto } from 'src/dtos/create-join-campaign.dto';
+import { IpfsResponse } from 'src/entities/ipfs-response.entity';
 
 @Controller('non-privacy/campaigns')
 export class CampaignController {
@@ -40,8 +41,8 @@ export class CampaignController {
     @ApiTags('Campaign')
     async createJoinCampaignIpfsHash(
         @Body() createJoinCampaignDto: CreateJoinCampaignDto,
-    ) {
-        await this.campaignService.createJoinCampaignIpfsHash(
+    ): Promise<IpfsResponse> {
+        return await this.campaignService.createJoinCampaignIpfsHash(
             createJoinCampaignDto,
         );
     }
