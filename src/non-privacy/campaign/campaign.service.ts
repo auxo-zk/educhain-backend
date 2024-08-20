@@ -44,7 +44,7 @@ export class CampaignService implements OnModuleInit {
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
             const campaignEntity: CampaignEntity = {
-                campaignId: i,
+                campaignId: i + 1,
                 totalFunded: BigInt(result[0]).toString(),
                 descriptionHash: result[1],
                 fundStart: Number(result[2]),
