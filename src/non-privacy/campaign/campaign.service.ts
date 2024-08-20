@@ -43,15 +43,16 @@ export class CampaignService implements OnModuleInit {
         const campaigns: CampaignEntity[] = [];
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
+            const campaignId = i + 1;
             const campaignEntity: CampaignEntity = {
-                campaignId: i + 1,
+                campaignId: campaignId,
                 totalFunded: BigInt(result[0]).toString(),
                 descriptionHash: result[1],
                 fundStart: Number(result[2]),
                 fundDuration: Number(result[3]),
                 allocated: Boolean(result[4]),
                 tokenRaising: result[5],
-                state: Number(await this.campaign.state(i + 1)),
+                state: Number(await this.campaign.state(campaignId)),
             };
             campaignEntity.ipfsData = await this.ipfs.getData(
                 Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),
@@ -61,7 +62,7 @@ export class CampaignService implements OnModuleInit {
             );
             const tempResults = governorIds.map(
                 async (governorId: number) =>
-                    await this.campaign.courseData(i + 1, governorId),
+                    await this.campaign.courseData(campaignId, governorId),
             );
 
             const courses: Course[] = [];
