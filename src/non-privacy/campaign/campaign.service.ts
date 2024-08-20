@@ -51,7 +51,7 @@ export class CampaignService implements OnModuleInit {
                 fundDuration: Number(result[3]),
                 allocated: Boolean(result[4]),
                 tokenRaising: result[5],
-                state: Number(await this.campaign.state(i)),
+                state: Number(await this.campaign.state(i + 1)),
             };
             campaignEntity.ipfsData = await this.ipfs.getData(
                 Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),
