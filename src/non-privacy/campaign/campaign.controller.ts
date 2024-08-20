@@ -1,4 +1,5 @@
 import {
+    Body,
     Controller,
     Get,
     Param,
@@ -38,7 +39,7 @@ export class CampaignController {
     @Post('create-join-campaign-ipfs-hash')
     @ApiTags('Campaign')
     async createJoinCampaignIpfsHash(
-        @Query() createJoinCampaignDto: CreateJoinCampaignDto,
+        @Body() createJoinCampaignDto: CreateJoinCampaignDto,
     ) {
         await this.campaignService.createJoinCampaignIpfsHash(
             createJoinCampaignDto,
