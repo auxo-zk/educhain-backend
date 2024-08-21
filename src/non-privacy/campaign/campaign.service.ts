@@ -60,15 +60,14 @@ export class CampaignService implements OnModuleInit {
             const governorIds = result[6].map((governorId: bigint) =>
                 Number(governorId),
             );
-            const tempResults = governorIds.map(
+            const tempResults = await governorIds.map(
                 async (governorId: number) =>
                     await this.campaign.courseData(campaignId, governorId),
             );
 
             const courses: Course[] = [];
-            // const tempResults = await Promise.all(promises);
             for (let j = 0; j < governorIds.length; j++) {
-                const tempResult = tempResults[j];
+                const tempResult = await tempResults[j];
                 const course: Course = {
                     governorId: governorIds[j],
                     governor: tempResult[0],
@@ -77,7 +76,7 @@ export class CampaignService implements OnModuleInit {
                     descriptionHash: tempResult[3],
                 };
                 course.ipfsData = await this.ipfs.getData(
-                    course.descriptionHash,
+                    Utilities.bytes32ToIpfsHash(course.descriptionHash),
                 );
                 courses.push(course);
             }
@@ -115,7 +114,7 @@ export class CampaignService implements OnModuleInit {
         );
         const courses: Course[] = [];
         for (let j = 0; j < governorIds.length; j++) {
-            const tempResult = tempResults[j];
+            const tempResult = await tempResults[j];
             const course: Course = {
                 governorId: governorIds[j],
                 governor: tempResult[0],

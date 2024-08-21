@@ -28,13 +28,20 @@ export declare namespace ICampaign {
     governor: AddressLike;
     fund: BigNumberish;
     minted: BigNumberish;
+    descriptionHash: BytesLike;
   };
 
   export type CourseStructOutput = [
     governor: string,
     fund: bigint,
-    minted: bigint
-  ] & { governor: string; fund: bigint; minted: bigint };
+    minted: bigint,
+    descriptionHash: string
+  ] & {
+    governor: string;
+    fund: bigint;
+    minted: bigint;
+    descriptionHash: string;
+  };
 }
 
 export interface CampaignInterface extends Interface {
@@ -47,6 +54,7 @@ export interface CampaignInterface extends Interface {
       | "fund"
       | "governorFactory"
       | "joinCampaign"
+      | "joinedCampaign"
       | "launchCampaign"
       | "nextCampaignId"
       | "state"
@@ -86,7 +94,11 @@ export interface CampaignInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "joinCampaign",
-    values: [BigNumberish, AddressLike]
+    values: [BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "joinedCampaign",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "launchCampaign",
@@ -118,6 +130,10 @@ export interface CampaignInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "joinCampaign",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "joinedCampaign",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -279,9 +295,19 @@ export interface Campaign extends BaseContract {
   governorFactory: TypedContractMethod<[], [string], "view">;
 
   joinCampaign: TypedContractMethod<
-    [campaignId: BigNumberish, governor: AddressLike],
+    [
+      campaignId: BigNumberish,
+      governor: AddressLike,
+      descriptionHash: BytesLike
+    ],
     [bigint],
     "nonpayable"
+  >;
+
+  joinedCampaign: TypedContractMethod<
+    [governorAddress: AddressLike],
+    [bigint[]],
+    "view"
   >;
 
   launchCampaign: TypedContractMethod<
@@ -346,10 +372,17 @@ export interface Campaign extends BaseContract {
   getFunction(
     nameOrSignature: "joinCampaign"
   ): TypedContractMethod<
-    [campaignId: BigNumberish, governor: AddressLike],
+    [
+      campaignId: BigNumberish,
+      governor: AddressLike,
+      descriptionHash: BytesLike
+    ],
     [bigint],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "joinedCampaign"
+  ): TypedContractMethod<[governorAddress: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "launchCampaign"
   ): TypedContractMethod<

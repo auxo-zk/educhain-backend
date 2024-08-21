@@ -194,6 +194,11 @@ const _abi = [
         name: "governor",
         type: "address",
       },
+      {
+        internalType: "bytes32",
+        name: "descriptionHash",
+        type: "bytes32",
+      },
     ],
     name: "joinCampaign",
     outputs: [

@@ -69,7 +69,6 @@ export interface GovernorInterface extends Interface {
       | "hashOperation"
       | "hashProposal"
       | "increaseFundedAndMinted"
-      | "joinCampaign"
       | "name"
       | "nextTokenId"
       | "proposalCore"
@@ -144,10 +143,6 @@ export interface GovernorInterface extends Interface {
   encodeFunctionData(
     functionFragment: "increaseFundedAndMinted",
     values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "joinCampaign",
-    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -255,10 +250,6 @@ export interface GovernorInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "increaseFundedAndMinted",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "joinCampaign",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
@@ -541,8 +532,6 @@ export interface Governor extends BaseContract {
     "nonpayable"
   >;
 
-  joinCampaign: TypedContractMethod<[], [void], "nonpayable">;
-
   name: TypedContractMethod<[], [string], "view">;
 
   nextTokenId: TypedContractMethod<[], [bigint], "view">;
@@ -712,9 +701,6 @@ export interface Governor extends BaseContract {
     [void],
     "nonpayable"
   >;
-  getFunction(
-    nameOrSignature: "joinCampaign"
-  ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "name"
   ): TypedContractMethod<[], [string], "view">;

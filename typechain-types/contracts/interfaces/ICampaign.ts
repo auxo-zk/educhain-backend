@@ -55,7 +55,7 @@ export interface ICampaignInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "joinCampaign",
-    values: [BigNumberish, AddressLike]
+    values: [BigNumberish, AddressLike, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "launchCampaign",
@@ -219,7 +219,11 @@ export interface ICampaign extends BaseContract {
   >;
 
   joinCampaign: TypedContractMethod<
-    [governorId: BigNumberish, governor: AddressLike],
+    [
+      governorId: BigNumberish,
+      governor: AddressLike,
+      descriptionHash: BytesLike
+    ],
     [bigint],
     "nonpayable"
   >;
@@ -269,7 +273,11 @@ export interface ICampaign extends BaseContract {
   getFunction(
     nameOrSignature: "joinCampaign"
   ): TypedContractMethod<
-    [governorId: BigNumberish, governor: AddressLike],
+    [
+      governorId: BigNumberish,
+      governor: AddressLike,
+      descriptionHash: BytesLike
+    ],
     [bigint],
     "nonpayable"
   >;
