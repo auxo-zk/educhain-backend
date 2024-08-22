@@ -1,9 +1,11 @@
 import { ProposalState } from 'src/constants';
+import { Builder } from 'src/schemas/builder.schema';
 
 export class GovernorEntity {
     governorId: number;
     address: string;
     founder: string;
+    founderInfo?: Builder;
     nextTokenId: number;
     tokenAddress: string;
     revenuePoolFactoryAddress: string;

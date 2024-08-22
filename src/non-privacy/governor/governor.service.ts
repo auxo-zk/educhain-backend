@@ -3,7 +3,9 @@ import {
     BadRequestException,
     Injectable,
 } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { ethers, JsonRpcProvider, Provider } from 'ethers';
+import { Model } from 'mongoose';
 import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
 import { CreateVestingDto } from 'src/dtos/create-vesting.dto';
 import { ActionEntity } from 'src/entities/action.entity';
@@ -16,6 +18,7 @@ import {
 import { TokenEntity } from 'src/entities/token.entity';
 import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
+import { Builder } from 'src/schemas/builder.schema';
 import { Utilities } from 'src/utilities';
 import { Governor, GovernorFactory } from 'typechain-types';
 
@@ -27,6 +30,8 @@ export class GovernorService {
     constructor(
         private readonly network: Network,
         private readonly ipfs: Ipfs,
+        @InjectModel(Builder.name)
+        private readonly builderModel: Model<Builder>,
     ) {
         this.provider = this.network.getDefaultProvider();
         this.governorFactory = this.network.getGovernorFactoryContract(
@@ -62,6 +67,9 @@ export class GovernorService {
                 governorId: Number(result[0]),
                 address: result[1].toString(),
                 founder: result[2].toString(),
+                founderInfo: await this.builderModel.findOne({
+                    address: result[2].toString(),
+                }),
                 nextTokenId: Number(result[3]),
                 tokenAddress: result[4].toString(),
                 revenuePoolFactoryAddress: result[5].toString(),
@@ -106,6 +114,9 @@ export class GovernorService {
             governorId: Number(result[0]),
             address: result[1].toString(),
             founder: result[2].toString(),
+            founderInfo: await this.builderModel.findOne({
+                address: result[2].toString(),
+            }),
             nextTokenId: Number(result[3]),
             tokenAddress: result[4].toString(),
             revenuePoolFactoryAddress: result[5].toString(),
