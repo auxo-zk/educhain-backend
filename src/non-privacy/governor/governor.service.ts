@@ -474,6 +474,7 @@ export class GovernorService {
             }
             return courses;
         } catch (err) {
+            // console.log(err);
             throw new BadRequestException(err);
         }
     }

@@ -20,6 +20,7 @@ import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
 import { ActionEntity } from 'src/entities/action.entity';
 import { CreateVestingDto } from 'src/dtos/create-vesting.dto';
 import { Course } from 'src/entities/campaign.entity';
+import { GetJoinedCampaignsDto } from 'src/dtos/get-joined-campaigns.dto';
 
 @Controller('non-privacy/governors')
 export class GovernorController {
@@ -29,6 +30,16 @@ export class GovernorController {
     @ApiTags('Governor')
     async getGovernors(): Promise<GovernorEntity[]> {
         return await this.governorService.getGovernors();
+    }
+
+    @Get('joined-campaigns')
+    @ApiTags('Governor')
+    async getJoinedCampaigns(
+        @Query() getJoinedCampaignsDto: GetJoinedCampaignsDto,
+    ): Promise<Course[]> {
+        return await this.governorService.getJoinedCampaigns(
+            getJoinedCampaignsDto.governorAddress,
+        );
     }
 
     @Get(':governorId')
@@ -93,14 +104,6 @@ export class GovernorController {
         @Param('account') account: string,
     ): Promise<TokenEntity[]> {
         return await this.governorService.getTokens(governorId, account);
-    }
-
-    @Get('joined-campaigns')
-    @ApiTags('Governor')
-    async getJoinedCampaigns(
-        @Query('governorAddress') governorAddress: string,
-    ): Promise<Course[]> {
-        return await this.governorService.getJoinedCampaigns(governorAddress);
     }
 
     @Post('bytecode/create-revenue-pool')
