@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
 import { CreateVestingDto } from 'src/dtos/create-vesting.dto';
 import { ActionEntity } from 'src/entities/action.entity';
+import { Course } from 'src/entities/campaign.entity';
 import {
     GovernorEntity,
     ProposalEntity,
@@ -20,12 +21,13 @@ import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
 import { Builder } from 'src/schemas/builder.schema';
 import { Utilities } from 'src/utilities';
-import { Governor, GovernorFactory } from 'typechain-types';
+import { Campaign, Governor, GovernorFactory } from 'typechain-types';
 
 @Injectable()
 export class GovernorService {
     private readonly provider: Provider;
     private readonly governorFactory: GovernorFactory;
+    private readonly campaign: Campaign;
 
     constructor(
         private readonly network: Network,
@@ -37,6 +39,7 @@ export class GovernorService {
         this.governorFactory = this.network.getGovernorFactoryContract(
             this.provider,
         );
+        this.campaign = this.network.getCampaignContract(this.provider);
     }
 
     async getGovernors(): Promise<GovernorEntity[]> {
@@ -437,6 +440,41 @@ export class GovernorService {
             return actionEntity;
         } catch (err) {
             throw new BadRequestException();
+        }
+    }
+
+    async getJoinedCampaigns(governorAddress: string): Promise<Course[]> {
+        try {
+            const governor = this.network.getGovernorContract(
+                this.provider,
+                governorAddress,
+            );
+            const governorId = await governor.governorId();
+            const campaignIds =
+                await this.campaign.joinedCampaign(governorAddress);
+            const courses: Course[] = [];
+            for (let i = 0; i < campaignIds.length; i++) {
+                const campaignId = campaignIds[i];
+                const result = await this.campaign.courseData(
+                    campaignId,
+                    governorId,
+                );
+                const course: Course = {
+                    governorId: Number(governorId),
+                    governor: result[0],
+                    fund: BigInt(result[1]).toString(),
+                    minted: Number(result[2]),
+                    campaignId: Number(campaignId),
+                    descriptionHash: result[3],
+                };
+                course.ipfsData = await this.ipfs.getData(
+                    Utilities.bytes32ToIpfsHash(course.descriptionHash),
+                );
+                courses.push(course);
+            }
+            return courses;
+        } catch (err) {
+            throw new BadRequestException(err);
         }
     }
 }

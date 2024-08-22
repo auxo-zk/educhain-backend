@@ -5,6 +5,7 @@ import {
     Param,
     ParseIntPipe,
     Post,
+    Query,
 } from '@nestjs/common';
 import { GovernorService } from './governor.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -18,6 +19,7 @@ import { TokenEntity } from 'src/entities/token.entity';
 import { CreateRevenuePoolDto } from 'src/dtos/create-revenue-pool.dto';
 import { ActionEntity } from 'src/entities/action.entity';
 import { CreateVestingDto } from 'src/dtos/create-vesting.dto';
+import { Course } from 'src/entities/campaign.entity';
 
 @Controller('non-privacy/governors')
 export class GovernorController {
@@ -91,6 +93,14 @@ export class GovernorController {
         @Param('account') account: string,
     ): Promise<TokenEntity[]> {
         return await this.governorService.getTokens(governorId, account);
+    }
+
+    @Get('joined-campaigns')
+    @ApiTags('Governor')
+    async getJoinedCampaigns(
+        @Query('governorAddress') governorAddress: string,
+    ): Promise<Course[]> {
+        return await this.governorService.getJoinedCampaigns(governorAddress);
     }
 
     @Post('bytecode/create-revenue-pool')

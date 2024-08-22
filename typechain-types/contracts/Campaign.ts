@@ -49,15 +49,27 @@ export interface CampaignInterface extends Interface {
     nameOrSignature:
       | "allocateFunds"
       | "campaignData"
+      | "campaignFounders"
       | "campaignsOwn"
       | "courseData"
       | "fund"
       | "governorFactory"
+      | "initialize"
+      | "investedCampaignList"
+      | "investedGovernorInACampaignList"
+      | "investedGovernorList"
+      | "isInvestedCampaign"
+      | "isInvestedGovernor"
+      | "isInvestedGovernorInACampaign"
       | "joinCampaign"
       | "joinedCampaign"
       | "launchCampaign"
       | "nextCampaignId"
+      | "owner"
+      | "renounceOwnership"
+      | "setGovernorFactory"
       | "state"
+      | "transferOwnership"
   ): FunctionFragment;
 
   getEvent(
@@ -66,6 +78,8 @@ export interface CampaignInterface extends Interface {
       | "Fund"
       | "FundAllocated"
       | "GovernorJoined"
+      | "Initialized"
+      | "OwnershipTransferred"
   ): EventFragment;
 
   encodeFunctionData(
@@ -74,6 +88,10 @@ export interface CampaignInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "campaignData",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "campaignFounders",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -93,6 +111,34 @@ export interface CampaignInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "initialize",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "investedCampaignList",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "investedGovernorInACampaignList",
+    values: [AddressLike, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "investedGovernorList",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isInvestedCampaign",
+    values: [AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isInvestedGovernor",
+    values: [AddressLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isInvestedGovernorInACampaign",
+    values: [AddressLike, BigNumberish, AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "joinCampaign",
     values: [BigNumberish, AddressLike, BytesLike]
   ): string;
@@ -108,7 +154,20 @@ export interface CampaignInterface extends Interface {
     functionFragment: "nextCampaignId",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setGovernorFactory",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(functionFragment: "state", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
+    values: [AddressLike]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "allocateFunds",
@@ -119,6 +178,10 @@ export interface CampaignInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "campaignFounders",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "campaignsOwn",
     data: BytesLike
   ): Result;
@@ -126,6 +189,31 @@ export interface CampaignInterface extends Interface {
   decodeFunctionResult(functionFragment: "fund", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "governorFactory",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "investedCampaignList",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "investedGovernorInACampaignList",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "investedGovernorList",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isInvestedCampaign",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isInvestedGovernor",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isInvestedGovernorInACampaign",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -144,7 +232,20 @@ export interface CampaignInterface extends Interface {
     functionFragment: "nextCampaignId",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setGovernorFactory",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "state", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
 }
 
 export namespace CampaignLaunchedEvent {
@@ -206,6 +307,31 @@ export namespace GovernorJoinedEvent {
   export interface OutputObject {
     campaignId: bigint;
     governorId: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace InitializedEvent {
+  export type InputTuple = [version: BigNumberish];
+  export type OutputTuple = [version: bigint];
+  export interface OutputObject {
+    version: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace OwnershipTransferredEvent {
+  export type InputTuple = [previousOwner: AddressLike, newOwner: AddressLike];
+  export type OutputTuple = [previousOwner: string, newOwner: string];
+  export interface OutputObject {
+    previousOwner: string;
+    newOwner: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -278,7 +404,13 @@ export interface Campaign extends BaseContract {
     "view"
   >;
 
-  campaignsOwn: TypedContractMethod<[owner: AddressLike], [bigint[]], "view">;
+  campaignFounders: TypedContractMethod<
+    [campaignId: BigNumberish],
+    [string],
+    "view"
+  >;
+
+  campaignsOwn: TypedContractMethod<[_owner: AddressLike], [bigint[]], "view">;
 
   courseData: TypedContractMethod<
     [campaignId: BigNumberish, governorId: BigNumberish],
@@ -293,6 +425,48 @@ export interface Campaign extends BaseContract {
   >;
 
   governorFactory: TypedContractMethod<[], [string], "view">;
+
+  initialize: TypedContractMethod<
+    [initialOwner_: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  investedCampaignList: TypedContractMethod<
+    [investor: AddressLike, arg1: BigNumberish],
+    [bigint],
+    "view"
+  >;
+
+  investedGovernorInACampaignList: TypedContractMethod<
+    [investor: AddressLike, campaignId: BigNumberish, arg2: BigNumberish],
+    [string],
+    "view"
+  >;
+
+  investedGovernorList: TypedContractMethod<
+    [investor: AddressLike, arg1: BigNumberish],
+    [string],
+    "view"
+  >;
+
+  isInvestedCampaign: TypedContractMethod<
+    [investor: AddressLike, campaignId: BigNumberish],
+    [boolean],
+    "view"
+  >;
+
+  isInvestedGovernor: TypedContractMethod<
+    [investor: AddressLike, governor: AddressLike],
+    [boolean],
+    "view"
+  >;
+
+  isInvestedGovernorInACampaign: TypedContractMethod<
+    [investor: AddressLike, campaignId: BigNumberish, governor: AddressLike],
+    [boolean],
+    "view"
+  >;
 
   joinCampaign: TypedContractMethod<
     [
@@ -323,7 +497,23 @@ export interface Campaign extends BaseContract {
 
   nextCampaignId: TypedContractMethod<[], [bigint], "view">;
 
+  owner: TypedContractMethod<[], [string], "view">;
+
+  renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
+
+  setGovernorFactory: TypedContractMethod<
+    [_governorFactory: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   state: TypedContractMethod<[campaignId: BigNumberish], [bigint], "view">;
+
+  transferOwnership: TypedContractMethod<
+    [newOwner: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -350,8 +540,11 @@ export interface Campaign extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "campaignFounders"
+  ): TypedContractMethod<[campaignId: BigNumberish], [string], "view">;
+  getFunction(
     nameOrSignature: "campaignsOwn"
-  ): TypedContractMethod<[owner: AddressLike], [bigint[]], "view">;
+  ): TypedContractMethod<[_owner: AddressLike], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "courseData"
   ): TypedContractMethod<
@@ -369,6 +562,51 @@ export interface Campaign extends BaseContract {
   getFunction(
     nameOrSignature: "governorFactory"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "initialize"
+  ): TypedContractMethod<[initialOwner_: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "investedCampaignList"
+  ): TypedContractMethod<
+    [investor: AddressLike, arg1: BigNumberish],
+    [bigint],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "investedGovernorInACampaignList"
+  ): TypedContractMethod<
+    [investor: AddressLike, campaignId: BigNumberish, arg2: BigNumberish],
+    [string],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "investedGovernorList"
+  ): TypedContractMethod<
+    [investor: AddressLike, arg1: BigNumberish],
+    [string],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "isInvestedCampaign"
+  ): TypedContractMethod<
+    [investor: AddressLike, campaignId: BigNumberish],
+    [boolean],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "isInvestedGovernor"
+  ): TypedContractMethod<
+    [investor: AddressLike, governor: AddressLike],
+    [boolean],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "isInvestedGovernorInACampaign"
+  ): TypedContractMethod<
+    [investor: AddressLike, campaignId: BigNumberish, governor: AddressLike],
+    [boolean],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "joinCampaign"
   ): TypedContractMethod<
@@ -399,8 +637,20 @@ export interface Campaign extends BaseContract {
     nameOrSignature: "nextCampaignId"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "owner"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "renounceOwnership"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setGovernorFactory"
+  ): TypedContractMethod<[_governorFactory: AddressLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "state"
   ): TypedContractMethod<[campaignId: BigNumberish], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "transferOwnership"
+  ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
 
   getEvent(
     key: "CampaignLaunched"
@@ -429,6 +679,20 @@ export interface Campaign extends BaseContract {
     GovernorJoinedEvent.InputTuple,
     GovernorJoinedEvent.OutputTuple,
     GovernorJoinedEvent.OutputObject
+  >;
+  getEvent(
+    key: "Initialized"
+  ): TypedContractEvent<
+    InitializedEvent.InputTuple,
+    InitializedEvent.OutputTuple,
+    InitializedEvent.OutputObject
+  >;
+  getEvent(
+    key: "OwnershipTransferred"
+  ): TypedContractEvent<
+    OwnershipTransferredEvent.InputTuple,
+    OwnershipTransferredEvent.OutputTuple,
+    OwnershipTransferredEvent.OutputObject
   >;
 
   filters: {
@@ -474,6 +738,28 @@ export interface Campaign extends BaseContract {
       GovernorJoinedEvent.InputTuple,
       GovernorJoinedEvent.OutputTuple,
       GovernorJoinedEvent.OutputObject
+    >;
+
+    "Initialized(uint64)": TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+    Initialized: TypedContractEvent<
+      InitializedEvent.InputTuple,
+      InitializedEvent.OutputTuple,
+      InitializedEvent.OutputObject
+    >;
+
+    "OwnershipTransferred(address,address)": TypedContractEvent<
+      OwnershipTransferredEvent.InputTuple,
+      OwnershipTransferredEvent.OutputTuple,
+      OwnershipTransferredEvent.OutputObject
+    >;
+    OwnershipTransferred: TypedContractEvent<
+      OwnershipTransferredEvent.InputTuple,
+      OwnershipTransferredEvent.OutputTuple,
+      OwnershipTransferredEvent.OutputObject
     >;
   };
 }

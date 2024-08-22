@@ -1,11 +1,14 @@
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { JsonRpcProvider, Provider } from 'ethers';
+import { Model } from 'mongoose';
 import { CampaignState } from 'src/constants';
 import { CreateJoinCampaignDto } from 'src/dtos/create-join-campaign.dto';
 import { CampaignEntity, Course } from 'src/entities/campaign.entity';
 import { IpfsResponse } from 'src/entities/ipfs-response.entity';
 import { Ipfs } from 'src/ipfs/ipfs';
 import { Network } from 'src/network/network';
+import { Organizer } from 'src/schemas/organizer.schema';
 import { Utilities } from 'src/utilities';
 import { Campaign } from 'typechain-types';
 
@@ -17,6 +20,8 @@ export class CampaignService implements OnModuleInit {
     constructor(
         private readonly network: Network,
         private readonly ipfs: Ipfs,
+        @InjectModel(Organizer.name)
+        private readonly organizerModel: Model<Organizer>,
     ) {
         this.provider = this.network.getDefaultProvider();
         this.campaign = this.network.getCampaignContract(this.provider);
@@ -46,6 +51,9 @@ export class CampaignService implements OnModuleInit {
             const campaignId = i + 1;
             const campaignEntity: CampaignEntity = {
                 campaignId: campaignId,
+                founder: (
+                    await this.campaign.campaignFounders(campaignId)
+                ).toString(),
                 totalFunded: BigInt(result[0]).toString(),
                 descriptionHash: result[1],
                 fundStart: Number(result[2]),
@@ -54,6 +62,9 @@ export class CampaignService implements OnModuleInit {
                 tokenRaising: result[5],
                 state: Number(await this.campaign.state(campaignId)),
             };
+            campaignEntity.founderInfo = await this.organizerModel.findOne({
+                address: campaignEntity.founder,
+            });
             campaignEntity.ipfsData = await this.ipfs.getData(
                 Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),
             );
@@ -94,6 +105,9 @@ export class CampaignService implements OnModuleInit {
         const result = await this.campaign.campaignData(campaignId);
         const campaignEntity: CampaignEntity = {
             campaignId: campaignId,
+            founder: (
+                await this.campaign.campaignFounders(campaignId)
+            ).toString(),
             totalFunded: BigInt(result[0]).toString(),
             descriptionHash: result[1],
             fundStart: Number(result[2]),
@@ -102,6 +116,9 @@ export class CampaignService implements OnModuleInit {
             tokenRaising: result[5],
             state: Number(await this.campaign.state(campaignId)),
         };
+        campaignEntity.founderInfo = await this.organizerModel.findOne({
+            address: campaignEntity.founder,
+        });
         campaignEntity.ipfsData = await this.ipfs.getData(
             Utilities.bytes32ToIpfsHash(campaignEntity.descriptionHash),
         );

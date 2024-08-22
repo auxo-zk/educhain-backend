@@ -23,12 +23,22 @@ import type {
   TypedContractMethod,
 } from "../common";
 
+export declare namespace ERC721Votes {
+  export type TokenInfosStruct = { id: BigNumberish; value: BigNumberish };
+
+  export type TokenInfosStructOutput = [id: bigint, value: bigint] & {
+    id: bigint;
+    value: bigint;
+  };
+}
+
 export interface ERC721VotesInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "_minter"
       | "approve"
       | "balanceOf"
+      | "getAllToken"
       | "getApproved"
       | "getVotes"
       | "getVotingPower"
@@ -57,6 +67,10 @@ export interface ERC721VotesInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "balanceOf",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllToken",
     values: [AddressLike]
   ): string;
   encodeFunctionData(
@@ -117,6 +131,10 @@ export interface ERC721VotesInterface extends Interface {
   decodeFunctionResult(functionFragment: "_minter", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllToken",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
     data: BytesLike
@@ -272,6 +290,12 @@ export interface ERC721Votes extends BaseContract {
 
   balanceOf: TypedContractMethod<[owner: AddressLike], [bigint], "view">;
 
+  getAllToken: TypedContractMethod<
+    [owner: AddressLike],
+    [ERC721Votes.TokenInfosStructOutput[]],
+    "nonpayable"
+  >;
+
   getApproved: TypedContractMethod<[tokenId: BigNumberish], [string], "view">;
 
   getVotes: TypedContractMethod<
@@ -360,6 +384,13 @@ export interface ERC721Votes extends BaseContract {
   getFunction(
     nameOrSignature: "balanceOf"
   ): TypedContractMethod<[owner: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getAllToken"
+  ): TypedContractMethod<
+    [owner: AddressLike],
+    [ERC721Votes.TokenInfosStructOutput[]],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "getApproved"
   ): TypedContractMethod<[tokenId: BigNumberish], [string], "view">;
