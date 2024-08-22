@@ -8,6 +8,7 @@ import { Ipfs } from 'src/ipfs/ipfs';
 import { HttpModule } from '@nestjs/axios';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Builder, BuilderSchema } from 'src/schemas/builder.schema';
+import { Organizer, OrganizerSchema } from 'src/schemas/organizer.schema';
 
 @Module({
     imports: [
@@ -15,6 +16,10 @@ import { Builder, BuilderSchema } from 'src/schemas/builder.schema';
             {
                 name: Builder.name,
                 schema: BuilderSchema,
+            },
+            {
+                name: Organizer.name,
+                schema: OrganizerSchema,
             },
         ]),
         HttpModule,
