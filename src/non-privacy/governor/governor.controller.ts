@@ -21,6 +21,7 @@ import { ActionEntity } from 'src/entities/action.entity';
 import { CreateVestingDto } from 'src/dtos/create-vesting.dto';
 import { Course } from 'src/entities/campaign.entity';
 import { GetJoinedCampaignsDto } from 'src/dtos/get-joined-campaigns.dto';
+import { GetJoinedCampaignDto } from 'src/dtos/get-joined-campaign.dto';
 
 @Controller('non-privacy/governors')
 export class GovernorController {
@@ -39,6 +40,17 @@ export class GovernorController {
     ): Promise<Course[]> {
         return await this.governorService.getJoinedCampaigns(
             getJoinedCampaignsDto.governorAddress,
+        );
+    }
+
+    @Get('joined-campaign')
+    @ApiTags('Governor')
+    async getJoinedCampaign(
+        @Query() getJoinedCampaignDto: GetJoinedCampaignDto,
+    ): Promise<Course> {
+        return await this.governorService.getJoinedCampaign(
+            getJoinedCampaignDto.governorAddress,
+            getJoinedCampaignDto.campaignId,
         );
     }
 

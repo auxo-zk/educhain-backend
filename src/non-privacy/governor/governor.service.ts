@@ -478,4 +478,37 @@ export class GovernorService {
             throw new BadRequestException(err);
         }
     }
+
+    async getJoinedCampaign(
+        governorAddress: string,
+        campaignId: number,
+    ): Promise<Course> {
+        try {
+            const governor = this.network.getGovernorContract(
+                this.provider,
+                governorAddress,
+            );
+            const governorId = await governor.governorId();
+
+            const result = await this.campaign.courseData(
+                campaignId,
+                governorId,
+            );
+            const course: Course = {
+                governorId: Number(governorId),
+                governor: result[0],
+                fund: BigInt(result[1]).toString(),
+                minted: Number(result[2]),
+                campaignId: Number(campaignId),
+                descriptionHash: result[3],
+            };
+            course.ipfsData = await this.ipfs.getData(
+                Utilities.bytes32ToIpfsHash(course.descriptionHash),
+            );
+            return course;
+        } catch (err) {
+            // console.log(err);
+            throw new BadRequestException(err);
+        }
+    }
 }
