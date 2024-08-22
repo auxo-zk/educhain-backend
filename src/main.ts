@@ -24,7 +24,14 @@ async function bootstrap() {
         )
         .build();
     app.enableCors();
-    app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            transformOptions: {
+                enableImplicitConversion: true, // <- This line here
+            },
+        }),
+    );
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document);
     await app.listen(3001, '127.0.0.1');

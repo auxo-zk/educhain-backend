@@ -33,16 +33,6 @@ export class GovernorController {
         return await this.governorService.getGovernors();
     }
 
-    @Get('joined-campaigns')
-    @ApiTags('Governor')
-    async getJoinedCampaigns(
-        @Query() getJoinedCampaignsDto: GetJoinedCampaignsDto,
-    ): Promise<Course[]> {
-        return await this.governorService.getJoinedCampaigns(
-            getJoinedCampaignsDto.governorAddress,
-        );
-    }
-
     @Get('joined-campaign')
     @ApiTags('Governor')
     async getJoinedCampaign(
@@ -51,6 +41,16 @@ export class GovernorController {
         return await this.governorService.getJoinedCampaign(
             getJoinedCampaignDto.governorAddress,
             getJoinedCampaignDto.campaignId,
+        );
+    }
+
+    @Get('joined-campaigns')
+    @ApiTags('Governor')
+    async getJoinedCampaigns(
+        @Query() getJoinedCampaignsDto: GetJoinedCampaignsDto,
+    ): Promise<Course[]> {
+        return await this.governorService.getJoinedCampaigns(
+            getJoinedCampaignsDto.governorAddress,
         );
     }
 
