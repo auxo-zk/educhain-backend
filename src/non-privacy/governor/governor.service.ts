@@ -426,7 +426,7 @@ export class GovernorService {
             const calldatas = [];
 
             const ABI = [
-                'vesting(uint256 _campaignId, address _governor, uint256 _amount)',
+                'function vesting(uint256 _campaignId, address _governor, uint256 _amount)',
             ];
 
             const iface = new ethers.Interface(ABI);
