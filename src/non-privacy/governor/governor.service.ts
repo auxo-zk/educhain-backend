@@ -404,13 +404,13 @@ export class GovernorService {
     }
 
     async createVesting(createVestingDto: CreateVestingDto) {
-        const nextGovernorId = await this.governorFactory.nextGovernorId();
-        if (
-            createVestingDto.governorId < 0 ||
-            createVestingDto.governorId >= nextGovernorId
-        ) {
-            throw new BadRequestException();
-        }
+        // const nextGovernorId = await this.governorFactory.nextGovernorId();
+        // if (
+        //     createVestingDto.governorId < 0 ||
+        //     createVestingDto.governorId >= nextGovernorId
+        // ) {
+        //     throw new BadRequestException();
+        // }
 
         try {
             // const governorAddress = await this.governorFactory.governor(
@@ -420,18 +420,26 @@ export class GovernorService {
             //     this.provider,
             //     governorAddress,
             // );
+
             const targets = [];
             const values = [];
             const calldatas = [];
-            const ABI = ['function transfer(address to, uint256 value)'];
+
+            const ABI = [
+                'vesting(uint256 _campaignId, address _governor, uint256 _amount)',
+            ];
+
             const iface = new ethers.Interface(ABI);
-            const calldata = iface.encodeFunctionData('createPool', [
-                createVestingDto.receiver,
+            const calldata = iface.encodeFunctionData('vesting', [
+                createVestingDto.campaignId,
+                createVestingDto.governorAddress,
                 createVestingDto.amount,
             ]);
-            targets.push(createVestingDto.tokenAddress);
+
+            targets.push(await this.campaign.getAddress());
             values.push('0');
             calldatas.push(calldata);
+
             const actionEntity: ActionEntity = {
                 targets: targets,
                 values: values,

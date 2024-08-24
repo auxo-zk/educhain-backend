@@ -2,13 +2,10 @@ import { IsNumber, IsNumberString, IsString } from 'class-validator';
 
 export class CreateVestingDto {
     @IsNumber()
-    governorId: number;
+    campaignId: number;
 
     @IsString()
-    tokenAddress: string;
-
-    @IsString()
-    receiver: string;
+    governorAddress: string;
 
     @IsNumberString()
     amount: string;
