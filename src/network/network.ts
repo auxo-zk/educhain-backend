@@ -107,6 +107,36 @@ export class Network {
                     'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5g5OBeZYeoR77RKzhCJW5T6',
                 ),
                 new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5h9xyjhYf4R77ROzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5iIeuNPYf4R77RPzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5iT8gHzYf4R77RQzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jEkkiXYf4R77RRzhCJW5T6', //
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jOweDMYf4R77RSzhCJW5T6', //
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jZezD-Yf4R77RTzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jiWQqYYf4R77RUzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jqrKW0Yf4R77RVzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5j2QmGjYf4R77RWzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5gIFIwKYf8R77RXzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
                     'https://open-campus-codex-sepolia.drpc.org',
                 ),
             ],
