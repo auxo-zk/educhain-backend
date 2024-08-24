@@ -44,14 +44,30 @@ export class Network {
     }
 
     getEducationJsonProvider(): Provider {
-        return new ethers.FallbackProvider([
-            new ethers.JsonRpcProvider(
-                'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jlOYddYccR77QyzhCJW5T6',
-            ),
-            new ethers.JsonRpcProvider(
-                'https://open-campus-codex-sepolia.drpc.org',
-            ),
-        ]);
+        return new ethers.FallbackProvider(
+            [
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jlOYddYccR77QyzhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5j-BC4EYc8R77Q1zhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5gIVlepYdAR77Q2zhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5gPv-mpYdAR77Q3zhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5gdp6cTYdAR77Q4zhCJW5T6',
+                ),
+                new ethers.JsonRpcProvider(
+                    'https://open-campus-codex-sepolia.drpc.org',
+                ),
+            ],
+            undefined,
+            { quorum: 1 },
+        );
         // return new ethers.JsonRpcProvider(
         //     'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jlOYddYccR77QyzhCJW5T6',
         // );
