@@ -44,9 +44,17 @@ export class Network {
     }
 
     getEducationJsonProvider(): Provider {
-        return new ethers.JsonRpcProvider(
-            'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jlOYddYccR77QyzhCJW5T6',
-        );
+        return new ethers.FallbackProvider([
+            new ethers.JsonRpcProvider(
+                'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jlOYddYccR77QyzhCJW5T6',
+            ),
+            new ethers.JsonRpcProvider(
+                'https://open-campus-codex-sepolia.drpc.org',
+            ),
+        ]);
+        // return new ethers.JsonRpcProvider(
+        //     'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jlOYddYccR77QyzhCJW5T6',
+        // );
     }
 
     getCampaignContract(provider: Provider): Campaign {
