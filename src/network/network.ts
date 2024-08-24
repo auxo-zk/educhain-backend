@@ -45,7 +45,7 @@ export class Network {
 
     getEducationJsonProvider(): Provider {
         return new ethers.JsonRpcProvider(
-            'https://open-campus-codex-sepolia.drpc.org',
+            'https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AtHBvXOTE0Afk2vmNC58H5jlOYddYccR77QyzhCJW5T6',
         );
     }
 
